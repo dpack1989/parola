@@ -15,6 +15,8 @@ const state = {
   speechSolved: false,
   speechAutoActive: false,
   speechRestartTimer: null,
+  speechPlaybackTimer: null,
+  speechPlaybackStarted: false,
   autoAdvanceTimer: null
 };
 
@@ -249,9 +251,11 @@ function renderStudy() {
   const word = state.session[state.index];
   if (!word) return finishSession();
   clearTimeout(state.speechRestartTimer);
+  clearTimeout(state.speechPlaybackTimer);
   clearTimeout(state.autoAdvanceTimer);
   state.revealed = false;
   state.speechSolved = false;
+  state.speechPlaybackStarted = false;
   const mode = currentMode();
   els.studyPosition.textContent = `${state.index + 1}/${state.session.length}`;
   els.studyProgress.style.width = `${(state.index / state.session.length) * 100}%`;
@@ -328,9 +332,26 @@ function recordSuccess(word) {
   word.lastReviewed = new Date().toISOString();
 }
 
+function repeatSpokenAnswer(word) {
+  if (state.speechPlaybackStarted || !state.speechSolved) return;
+  state.speechPlaybackStarted = true;
+  clearTimeout(state.speechPlaybackTimer);
+  state.speechPlaybackTimer = setTimeout(() => {
+    if (!els.studyDialog.open || !state.speechSolved) return;
+    speak(word.italian, () => {
+      if (!els.studyDialog.open || !state.speechSolved) return;
+      state.autoAdvanceTimer = setTimeout(() => {
+        state.index += 1;
+        renderStudy();
+      }, 650);
+    });
+  }, 350);
+}
+
 function finishSpokenWord(word, heard = "") {
   if (state.speechSolved) return;
   state.speechSolved = true;
+  const recognitionWasActive = !!state.recognition;
   state.recognition?.stop?.();
   recordSuccess(word);
   const nextDays = Math.max(1, Math.round(6 - (word.difficulty || 0)));
@@ -344,13 +365,9 @@ function finishSpokenWord(word, heard = "") {
     feedback.className = "feedback good";
     feedback.textContent = heard ? `Richtig erkannt: „${heard}“` : "Richtig! Ottimo!";
   }
-  els.studyActions.innerHTML = `<p class="feedback good">Richtig – gleich geht es weiter …</p>`;
-  speak(word.italian, () => {
-    state.autoAdvanceTimer = setTimeout(() => {
-      state.index += 1;
-      renderStudy();
-    }, 650);
-  });
+  els.studyActions.innerHTML = `<p class="feedback good">Richtig – hör dir das Wort noch einmal an …</p>`;
+  if (recognitionWasActive) state.speechPlaybackTimer = setTimeout(() => repeatSpokenAnswer(word), 1200);
+  else repeatSpokenAnswer(word);
 }
 
 function processSpokenAttempt(value, word) {
@@ -426,6 +443,10 @@ function startRecognition(word) {
     if (state.recognition !== recognition) return;
     state.recognition = null;
     button?.classList.remove("listening");
+    if (state.speechSolved) {
+      repeatSpokenAnswer(word);
+      return;
+    }
     if (state.speechAutoActive && !state.speechSolved && els.studyDialog.open && currentMode() === "speak") {
       state.speechRestartTimer = setTimeout(() => startRecognition(word), 700);
     }
@@ -529,8 +550,10 @@ document.addEventListener("click", (event) => {
   if (target.id === "closeStudy" || target.id === "finishStudy") {
     state.speechAutoActive = false;
     clearTimeout(state.speechRestartTimer);
+    clearTimeout(state.speechPlaybackTimer);
     clearTimeout(state.autoAdvanceTimer);
     state.recognition?.abort?.();
+    window.speechSynthesis?.cancel?.();
     els.studyDialog.close();
   }
   const word = state.session[state.index];
