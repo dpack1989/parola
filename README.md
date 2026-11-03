@@ -23,6 +23,7 @@ Enthalten sind:
 - Export und Import einer JSON-Datensicherung
 - Web-App-Manifest, App-Symbol und Offline-Cache
 - responsive Bedienoberfläche für das iPhone
+- eingebauter Vokabelkatalog aus dem Ordner `INBOUND`
 
 ## Noch offen
 
@@ -57,6 +58,28 @@ Danach im Browser `http://127.0.0.1:8765` öffnen.
 Die Vokabeln liegen im `localStorage` des jeweiligen Browsers unter dem Schlüssel `parola-v1`. Sie sind nicht automatisch zwischen Geräten synchronisiert. Deshalb regelmäßig im Bereich **Sicherung** eine JSON-Datei herunterladen.
 
 Beim Import einer Sicherung wird die vorhandene Sammlung ersetzt. Wenn bereits Wörter vorhanden sind, lädt Parola vorher automatisch eine Sicherung herunter.
+
+## Neue Vokabeldateien einlesen
+
+Neue Wortpaare werden in `INBOUND/vokabeln.txt` eingetragen. Das Format besteht immer aus Italienisch, Deutsch und einer Leerzeile:
+
+```text
+il treno
+der Zug
+
+la stazione
+der Bahnhof
+```
+
+Danach im Projektordner ausführen:
+
+```powershell
+& .\tools\Import-Vocabulary.ps1
+```
+
+Das Skript ergänzt neue Wörter in `data/vocabulary.json`, aktualisiert geänderte Übersetzungen und Kategorien und lässt alle übrigen Wörter bestehen. Die gelesene TXT-Datei wird mit einem Zeitstempel nach `INBOUND/Archiv` verschoben. Bekannte Kategorien und bevorzugte Übersetzungen stehen in `tools/vocabulary-rules.json`; völlig unbekannte Wörter erhalten zunächst die Gruppe **Neu / prüfen**.
+
+Beim nächsten Laden gleicht Parola den Katalog mit dem lokalen Bestand ab. Persönlicher Lernfortschritt und Fehlerstatistik bleiben erhalten.
 
 ## Bekannte Einschränkung
 

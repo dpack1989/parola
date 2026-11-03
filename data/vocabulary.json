@@ -1,0 +1,1681 @@
+{
+  "version": "20261103141133",
+  "generatedAt": "2026-11-03T14:11:33.1402405Z",
+  "sourceFile": "vokabeln.txt",
+  "words": [
+    {
+      "id": "catalog-274c63d72da54055",
+      "italian": "a presto",
+      "german": "bis bald",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-70a0d5198ebb88f9",
+      "italian": "ah",
+      "german": "Ah, Ach",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-cb094015d7e4bde8",
+      "italian": "aiuto",
+      "german": "Hilfe",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-82150fbdf006aa8c",
+      "italian": "allegra",
+      "german": "fröhlich",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-aa300fb004a5d73d",
+      "italian": "allegro",
+      "german": "fröhlich",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-331ea7dbc1741d64",
+      "italian": "allora",
+      "german": "also",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1336f75d667b5cc7",
+      "italian": "anche",
+      "german": "auch",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-038e711629259584",
+      "italian": "arabo",
+      "german": "Arabisch, arabisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-afdeee33b3a590c7",
+      "italian": "arrivederci",
+      "german": "auf Wiedersehen",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-85d25948c1d67ea5",
+      "italian": "arte",
+      "german": "Kunst",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b493d48364afe44d",
+      "italian": "banana",
+      "german": "Banane",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-37e89731dcf37b02",
+      "italian": "banca",
+      "german": "Bank",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-d014737671a9a002",
+      "italian": "bello",
+      "german": "schön",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-77fc577b9d1eb7ce",
+      "italian": "bene",
+      "german": "gut",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-c524bcf78fae4ad0",
+      "italian": "bianco",
+      "german": "weiß",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2103bb2c1b033adb",
+      "italian": "bibita",
+      "german": "Getränk, Erfrischungsgetränk",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8d6341258d8d4cb6",
+      "italian": "biblioteca",
+      "german": "Bibliothek, Büchersammlung",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9fc1b6fdfeeaecc2",
+      "italian": "biscotto",
+      "german": "Keks, Gebäckstück",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f4c4849bc6706c93",
+      "italian": "blu",
+      "german": "blau",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-37015b5c981b8db6",
+      "italian": "brutto",
+      "german": "hässlich, schlecht",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-26eeb57586214e0e",
+      "italian": "buonasera",
+      "german": "guten Abend",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e0cb29405bc78437",
+      "italian": "buongiorno",
+      "german": "Guten Tag",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-91f5402398bd564c",
+      "italian": "buono",
+      "german": "gut, lecker",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1aa15c717afffd31",
+      "italian": "c'è",
+      "german": "es gibt, da ist",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-07f4328075815d92",
+      "italian": "caffè",
+      "german": "Kaffee",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a524a169e45307d9",
+      "italian": "camerino",
+      "german": "Umkleidekabine",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9b1762a62a3ab00f",
+      "italian": "camicia",
+      "german": "Hemd, Bluse",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2efe342d40463a2d",
+      "italian": "cappello",
+      "german": "Hut, Mütze",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2475d6542ef16f1b",
+      "italian": "cappotto",
+      "german": "Mantel",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-d1ca0d19a82caa64",
+      "italian": "cappuccino",
+      "german": "Cappuccino",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-4774544aef8821ef",
+      "italian": "carino",
+      "german": "hübsch, nett",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e7b5b3f001abae43",
+      "italian": "carne",
+      "german": "Fleisch",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-0426491043cb32c4",
+      "italian": "caro",
+      "german": "teuer, lieb",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-c403054b102564ef",
+      "italian": "carota",
+      "german": "Karotte",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b3813027ed2150ec",
+      "italian": "casa",
+      "german": "Haus, Zuhause",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-84316520760353b5",
+      "italian": "cassa",
+      "german": "Kasse",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1f580bb27589a391",
+      "italian": "centro",
+      "german": "Zentrum",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-74b24a4600c0268c",
+      "italian": "centro commerciale",
+      "german": "Einkaufszentrum",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7fc8fae708bd3ee0",
+      "italian": "certo",
+      "german": "sicher",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f54cc623231043da",
+      "italian": "cetriolo",
+      "german": "Gurke",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3052eb6f7bae7493",
+      "italian": "chiesa",
+      "german": "Kirche",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e7e2db1addc114f8",
+      "italian": "ci sono",
+      "german": "es gibt, da sind",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a05dcb75ec375b1f",
+      "italian": "cinese",
+      "german": "chinesisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-74486d610c94568c",
+      "italian": "città",
+      "german": "Stadt, Städte",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9597bcecb2560914",
+      "italian": "come va",
+      "german": "wie geht's",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1143da2bc54c495c",
+      "italian": "con",
+      "german": "mit",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-afc14cc48691d5be",
+      "italian": "conto",
+      "german": "Rechnung, Konto",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3b13767a6fdf0612",
+      "italian": "cornetto",
+      "german": "Hörnchen, Croissant",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9c29a5917cf73dce",
+      "italian": "dolce",
+      "german": "süß, Nachspeise",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-c544de4cdee73cef",
+      "italian": "dov'è",
+      "german": "wo ist, wo befindet sich",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-445246214655e118",
+      "italian": "dove sono",
+      "german": "wo sind",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-458a4770df2b51b5",
+      "italian": "due",
+      "german": "zwei",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3f79bb7b435b0532",
+      "italian": "e",
+      "german": "und",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-97c916cd94785d7b",
+      "italian": "è",
+      "german": "ist, es ist",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-fd5a95a61e80babb",
+      "italian": "è di",
+      "german": "gehört, ist von",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b0373cad9d913151",
+      "italian": "e tu",
+      "german": "und du",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-32d51ddb0986df29",
+      "italian": "ecco",
+      "german": "hier ist, da ist",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2c2830116e7f5e53",
+      "italian": "economico",
+      "german": "günstig, preiswert",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e0c77422067349c1",
+      "italian": "entrata",
+      "german": "Eingang, Einfahrt",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a8a140e8c806b065",
+      "italian": "fagiolo",
+      "german": "Bohne",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-255b5ee4b1a81c5f",
+      "italian": "fantastico",
+      "german": "fantastisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-871218d9cd73fe0c",
+      "italian": "farmacia",
+      "german": "Apotheke",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-fe62c06d710506d9",
+      "italian": "figlia",
+      "german": "Tochter",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7edad3709767ab81",
+      "italian": "figlio",
+      "german": "Sohn, Kind",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b29ae6b1c268051f",
+      "italian": "fragola",
+      "german": "Erdbeere",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-c8bee0bb0059c365",
+      "italian": "francese",
+      "german": "Französisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7ded2c90172ea13a",
+      "italian": "fratello",
+      "german": "Bruder",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-35e2d1197911adea",
+      "italian": "freddo",
+      "german": "kalt",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3c3becba49484fc0",
+      "italian": "gelateria",
+      "german": "Eisdiele",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ee1283eaffeeeb34",
+      "italian": "gelato",
+      "german": "Eis, Eiscreme",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7ef640db97545689",
+      "italian": "giacca",
+      "german": "Jacke, Sakko",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f0b69c2bc2aeb305",
+      "italian": "giallo",
+      "german": "gelb",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a59a8418c2be921e",
+      "italian": "gonna",
+      "german": "Rock",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-34ca6bb1036d148d",
+      "italian": "grande",
+      "german": "groß",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6cbdea945e7af318",
+      "italian": "grazie",
+      "german": "danke",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8b987c3b9e319fd6",
+      "italian": "guarda",
+      "german": "schau, sieh",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-28a0de3c08ceaf23",
+      "italian": "hai bisogno di",
+      "german": "du brauchst",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a821c62e8104f851",
+      "italian": "ho",
+      "german": "ich habe",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-fb36e5511586ee5b",
+      "italian": "ho bisogno di",
+      "german": "ich brauche",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8d53a3e3672946bd",
+      "italian": "hotel",
+      "german": "Hotel",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-de7d1b721a1e0632",
+      "italian": "i",
+      "german": "die",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a0fb903525dc10dc",
+      "italian": "il",
+      "german": "der",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e982f654eccffcdd",
+      "italian": "impermeabile",
+      "german": "Regenmantel, wasserfest",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-582967534d0f909d",
+      "italian": "in",
+      "german": "in, nach, auf",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-bb595fd37b59f59a",
+      "italian": "inglese",
+      "german": "Englisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-4021fadf187fd2c8",
+      "italian": "io",
+      "german": "ich",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-60d3f69c7413796c",
+      "italian": "io sono",
+      "german": "ich bin",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2cb4c2ac5779606a",
+      "italian": "italiano",
+      "german": "Italienisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ce92767c3a48612d",
+      "italian": "l'",
+      "german": "der, die, das",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b737ca7ee563ae80",
+      "italian": "la",
+      "german": "die",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-61098a4bf2a5e216",
+      "italian": "le",
+      "german": "die, sie",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7d296c79bdb526d6",
+      "italian": "lei",
+      "german": "sie, Sie",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-cb8344440c62a1c5",
+      "italian": "lì",
+      "german": "dort",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9294ab38039f60d2",
+      "italian": "lo",
+      "german": "der, die, das",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ef19ee4453afd87c",
+      "italian": "lontano",
+      "german": "weit, entfernt",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b66e2f869620e9d3",
+      "italian": "lui",
+      "german": "er",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3c44c3e1b8b78447",
+      "italian": "ma",
+      "german": "aber",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b372389ab02d93ab",
+      "italian": "maglietta",
+      "german": "T-Shirt",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6bc8ef9a681aafa6",
+      "italian": "maglione",
+      "german": "Pullover",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-0d248e82c62c9386",
+      "italian": "male",
+      "german": "schlecht",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-60fc4ab0499870cd",
+      "italian": "mandarino",
+      "german": "Mandarine",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-727ac6b986ece12a",
+      "italian": "mela",
+      "german": "Apfel",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b6cd6b034b00bb36",
+      "italian": "mercato",
+      "german": "Markt",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-90d9f23f81faf5ab",
+      "italian": "mi dispiace",
+      "german": "es tut mir leid",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8668bd4d53eecc6e",
+      "italian": "mirtillo",
+      "german": "Heidelbeere, Blaubeere",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6691c9cc54b14234",
+      "italian": "moderno",
+      "german": "modern",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8a2c48c51c2d4dfd",
+      "italian": "molto",
+      "german": "sehr",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-68bcca51e9d2b1d3",
+      "italian": "moschea",
+      "german": "Moschee",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3adec85c041ea249",
+      "italian": "museo",
+      "german": "Museum",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e04dc6405154e1be",
+      "italian": "musica",
+      "german": "Musik",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a5f83e3845a8d363",
+      "italian": "negozio",
+      "german": "Geschäft",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-528c291e315592e6",
+      "italian": "nero",
+      "german": "schwarz",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9390298f3fb0c5b1",
+      "italian": "no",
+      "german": "nein",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-bcee72e6df5d5631",
+      "italian": "non",
+      "german": "nicht",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-186195fc7c138822",
+      "italian": "nuovo",
+      "german": "neu",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-65c74c15a686187b",
+      "italian": "o",
+      "german": "oder",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-50e3d1435a76e26e",
+      "italian": "ombrello",
+      "german": "Regenschirm",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1ec63275753fb19a",
+      "italian": "ora",
+      "german": "jetzt, Stunde",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-d2d90f93831a3a60",
+      "italian": "palazzo",
+      "german": "Gebäude, Palast",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-082e1db14d3c84ca",
+      "italian": "panificio",
+      "german": "Bäckerei",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ea9186c633a894ad",
+      "italian": "panino",
+      "german": "Sandwich, belegtes Brötchen",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-48d8fbbc57fb9704",
+      "italian": "parco",
+      "german": "Park",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ee313fb5b28e79da",
+      "italian": "parli",
+      "german": "du sprichst",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-812c887a23221c47",
+      "italian": "parlo",
+      "german": "ich spreche",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-da248eeaffa573da",
+      "italian": "patata",
+      "german": "Kartoffel",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f3a79ab6a3724bfd",
+      "italian": "per favore",
+      "german": "bitte",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ae0a456b0a5b5a05",
+      "italian": "pera",
+      "german": "Birne",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-2409cf8464096550",
+      "italian": "perfetto",
+      "german": "perfekt",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f6a30cf5d4bda661",
+      "italian": "piacere",
+      "german": "freut mich",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-470f75bd5316d090",
+      "italian": "piazza",
+      "german": "Platz",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a1abef611f239904",
+      "italian": "piccolo",
+      "german": "klein",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9ed1515819dec61f",
+      "italian": "pizza",
+      "german": "Pizza",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-fb07166179b1ce3c",
+      "italian": "poi",
+      "german": "dann",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-359ee8d482d3cac0",
+      "italian": "pollo",
+      "german": "Hühnchen",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1de664b5d4775b74",
+      "italian": "polpetta",
+      "german": "Fleischbällchen, Frikadelle",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-9504bc37917854fe",
+      "italian": "pomodoro",
+      "german": "Tomate",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-0aa01a0a24175607",
+      "italian": "pompelmo",
+      "german": "Grapefruit",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6b5e2bb37097d44a",
+      "italian": "posta",
+      "german": "Post",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-dadebf4876a7d734",
+      "italian": "prego",
+      "german": "bitte, gern geschehen",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-760176194068f302",
+      "italian": "qui",
+      "german": "hier",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-3ca9b5447947568f",
+      "italian": "ragazza",
+      "german": "Mädchen, Freundin",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-284152a89023a18f",
+      "italian": "ragazzo",
+      "german": "Junge, Freund",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-0e151beee3ce8e97",
+      "italian": "ristorante",
+      "german": "Restaurant",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-43d4876d40eff0ff",
+      "italian": "rosso",
+      "german": "rot",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-f9afe0ca8d925f21",
+      "italian": "salve",
+      "german": "Hallo",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-079033dc531e63d3",
+      "italian": "scarpa",
+      "german": "Schuh",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1730472e5113de56",
+      "italian": "scontrino",
+      "german": "Kassenzettel, Beleg",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-18510d41abc996a3",
+      "italian": "scuola",
+      "german": "Schule",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6408b2df3cb8922a",
+      "italian": "scusi",
+      "german": "Entschuldigen Sie",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-5b874fb5543d52f9",
+      "italian": "sei di",
+      "german": "du kommst aus",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7c289f2ce84659ab",
+      "italian": "seria",
+      "german": "ernst",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-22708d959693fd93",
+      "italian": "serio",
+      "german": "ernst, seriös",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ad273c98e3263999",
+      "italian": "sì",
+      "german": "ja",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e2f34033b52c4dec",
+      "italian": "simpatica",
+      "german": "sympathisch",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-493b40de45fd5577",
+      "italian": "simpatico",
+      "german": "sympathisch, nett",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-5364f2f2fc4f54e9",
+      "italian": "solo",
+      "german": "nur, allein",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-24af5267518fcc67",
+      "italian": "sono",
+      "german": "ich bin, sie sind",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-8448d427da97780d",
+      "italian": "sono di",
+      "german": "ich komme aus",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-cdb998ea8bb80c18",
+      "italian": "sorella",
+      "german": "Schwester",
+      "group": "Familie",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-fc21c7fec96cee26",
+      "italian": "spagnolo",
+      "german": "spanisch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-c4ee252e6e0cb130",
+      "italian": "specchio",
+      "german": "Spiegel",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-6116ff6211268da4",
+      "italian": "sta piovendo",
+      "german": "es regnet",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-222182aa2d1e1d54",
+      "italian": "stazione",
+      "german": "Bahnhof, Station",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-29e37e221c6323f5",
+      "italian": "stivale",
+      "german": "Stiefel",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-989a455d9b8b094d",
+      "italian": "studi",
+      "german": "du lernst, du studierst",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-da0daaba4b156961",
+      "italian": "studio",
+      "german": "ich lerne, ich studiere",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-860b6238c334b384",
+      "italian": "tè",
+      "german": "Tee",
+      "group": "Café & Bestellen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-a7e507e7aa89404c",
+      "italian": "teatro",
+      "german": "Theater",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-642796f7fc4f4f31",
+      "italian": "tedesco",
+      "german": "Deutsch",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-e3aae38397084a8e",
+      "italian": "timida",
+      "german": "schüchtern",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-14c79dba72cc2450",
+      "italian": "timido",
+      "german": "schüchtern",
+      "group": "Charakter",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-055fbcbe7b433554",
+      "italian": "torta",
+      "german": "Kuchen, Torte",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ddf3c8a26e7de635",
+      "italian": "tre",
+      "german": "drei",
+      "group": "Obst & Gemüse",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-764c4c7b78d6fd3b",
+      "italian": "tu",
+      "german": "du",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-68bca10eea2ba33f",
+      "italian": "un",
+      "german": "ein",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-161f0e5ed45f6d51",
+      "italian": "una",
+      "german": "eine",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ef38ebd19d7fc6ac",
+      "italian": "uscita",
+      "german": "Ausgang, Ausfahrt",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-34601a347324dd79",
+      "italian": "va bene",
+      "german": "in Ordnung",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ec061fafb777f294",
+      "italian": "verde",
+      "german": "grün",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-5cca655ac072f27f",
+      "italian": "vero",
+      "german": "wahr, nicht wahr",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-ad481361b0f4b2f8",
+      "italian": "vestiti",
+      "german": "Kleidung",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-259bed3fb0c391c3",
+      "italian": "vestito",
+      "german": "Kleid, Anzug",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-4a711770d61b69ae",
+      "italian": "vicino",
+      "german": "nah, in der Nähe, Nachbar",
+      "group": "Stadt & Orientierung",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-7779e4f15bce6879",
+      "italian": "vorrei",
+      "german": "ich möchte",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b6dc933311bc2357",
+      "italian": "wow",
+      "german": "Wow",
+      "group": "Sprachen & Herkunft",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1a7207a8396f209e",
+      "italian": "zaino",
+      "german": "Rucksack, Schulranzen",
+      "group": "Kleidung & Einkaufen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    }
+  ]
+}

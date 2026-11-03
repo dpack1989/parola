@@ -5,6 +5,7 @@ const DAY = 86400000;
 
 const state = {
   words: [],
+  catalogVersion: "",
   session: [],
   index: 0,
   mode: "cards",
@@ -31,14 +32,63 @@ const els = {
   backupDialog: $("#backupDialog"), toast: $("#toast")
 };
 
-function load() {
+async function load() {
+  let parsed = null;
   try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
     state.words = Array.isArray(parsed?.words) ? parsed.words.map(normalizeWordData) : [];
+    state.catalogVersion = parsed?.catalogVersion || "";
   } catch {
     state.words = [];
   }
   render();
+  await syncCatalog(!state.catalogVersion);
+}
+
+async function syncCatalog(replaceLegacy = false) {
+  try {
+    const response = await fetch("./data/vocabulary.json", { cache: "no-cache" });
+    if (!response.ok) throw new Error();
+    const catalog = await response.json();
+    if (!Array.isArray(catalog.words) || !catalog.version) throw new Error();
+
+    if (replaceLegacy) state.words = [];
+    const byId = new Map(state.words.map((word) => [word.id, word]));
+    const byItalian = new Map(state.words.map((word) => [normalize(word.italian), word]));
+
+    for (const sourceWord of catalog.words) {
+      if (!sourceWord.italian || !sourceWord.german) continue;
+      const existing = byId.get(sourceWord.id) || byItalian.get(normalize(sourceWord.italian));
+      if (existing) {
+        Object.assign(existing, {
+          italian: sourceWord.italian,
+          german: sourceWord.german,
+          group: sourceWord.group || "Neu / prüfen",
+          note: sourceWord.note || existing.note || "",
+          source: "catalog",
+          catalogUpdatedAt: sourceWord.catalogUpdatedAt || catalog.generatedAt
+        });
+      } else {
+        const word = normalizeWordData({
+          ...sourceWord,
+          id: sourceWord.id || uid(),
+          source: "catalog",
+          due: new Date().toISOString(),
+          interval: 0,
+          repetitions: 0,
+          createdAt: catalog.generatedAt || new Date().toISOString()
+        });
+        state.words.push(word);
+        byId.set(word.id, word);
+        byItalian.set(normalize(word.italian), word);
+      }
+    }
+
+    state.catalogVersion = String(catalog.version);
+    save();
+  } catch {
+    render();
+  }
 }
 
 function normalizeWordData(word) {
@@ -53,7 +103,7 @@ function normalizeWordData(word) {
 }
 
 function persist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, exportedAt: new Date().toISOString(), words: state.words }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words }));
 }
 
 function save() {
@@ -414,7 +464,7 @@ function toast(message) {
 }
 
 function exportData() {
-  const payload = JSON.stringify({ version: 1, app: "Parola", exportedAt: new Date().toISOString(), words: state.words }, null, 2);
+  const payload = JSON.stringify({ version: 1, app: "Parola", catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words }, null, 2);
   const blob = new Blob([payload], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
@@ -429,7 +479,9 @@ async function importData(file) {
     if (!Array.isArray(parsed.words) || parsed.words.some((word) => !word.italian || !word.german)) throw new Error();
     if (state.words.length) exportData();
     state.words = parsed.words.map(normalizeWordData);
-    save();
+    state.catalogVersion = parsed.catalogVersion || state.catalogVersion;
+    persist();
+    await syncCatalog(false);
     els.backupDialog.close();
     toast(`${state.words.length} Vokabeln wurden eingelesen.`);
   } catch {
