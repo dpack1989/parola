@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f3ea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Parola">
+  <title>Parola – Italienisch lernen</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Il tuo allenamento quotidiano</p>
+        <h1>Parola<span>.</span></h1>
+      </div>
+      <button class="icon-button" id="openSettings" aria-label="Datensicherung öffnen">•••</button>
+    </header>
+
+    <main>
+      <section class="hero-card" aria-labelledby="todayTitle">
+        <div>
+          <p class="section-kicker">Heute</p>
+          <h2 id="todayTitle"><span id="dueCount">0</span> <span id="dueLabel">Wörter warten</span> auf dich</h2>
+          <p id="todayHint">Füge deine ersten Vokabeln hinzu und starte deine Lernserie.</p>
+        </div>
+        <button class="primary-button" id="startMixed">Gemischt üben <span>→</span></button>
+      </section>
+
+      <section aria-labelledby="modesTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Lernmodus</p>
+            <h2 id="modesTitle">Wie möchtest du üben?</h2>
+          </div>
+        </div>
+        <label class="group-filter" for="trainingGroup">Trainingsauswahl
+          <select id="trainingGroup">
+            <option value="">Alle Gruppen</option>
+          </select>
+        </label>
+        <div class="mode-grid">
+          <button class="mode-card coral" data-mode="cards">
+            <span class="mode-icon">◫</span>
+            <strong>Lernkarten</strong>
+            <small>Aufdecken & bewerten</small>
+          </button>
+          <button class="mode-card blue" data-mode="write">
+            <span class="mode-icon">✎</span>
+            <strong>Schreiben</strong>
+            <small>Italienisch eintippen</small>
+          </button>
+          <button class="mode-card green" data-mode="speak">
+            <span class="mode-icon">⌁</span>
+            <strong>Sprechen</strong>
+            <small>Mit dem Mikrofon üben</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Meine Sammlung</p>
+            <h2 id="libraryTitle">Vokabeln <span class="count-pill" id="wordCount">0</span></h2>
+          </div>
+          <button class="text-button" id="openAdd">+ Neues Wort</button>
+        </div>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-illustration">ciao!</div>
+          <h3>Noch ganz leer</h3>
+          <p>Trage die Wörter aus deiner nächsten Duolingo-Lektion ein.</p>
+          <button class="secondary-button" id="emptyAdd">Erstes Wort hinzufügen</button>
+        </div>
+        <div class="word-list" id="wordList"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <button class="nav-item active" data-view="home"><span>⌂</span>Heute</button>
+      <button class="nav-item" data-view="words"><span>≡</span>Wörter</button>
+      <button class="nav-item" data-view="backup"><span>⇅</span>Sicherung</button>
+    </nav>
+  </div>
+
+  <dialog id="wordDialog">
+    <form method="dialog" id="wordForm" class="dialog-card">
+      <button class="dialog-close" id="closeWord" type="button" aria-label="Schließen">×</button>
+      <p class="section-kicker">Vokabel</p>
+      <h2 id="wordDialogTitle">Neues Wort</h2>
+      <input type="hidden" id="editId">
+      <label>Italienisch
+        <div class="input-with-action">
+          <input id="italianInput" required autocomplete="off" autocapitalize="none" placeholder="z. B. la finestra">
+          <button type="button" id="previewSpeech" aria-label="Italienisches Wort anhören">🔊</button>
+        </div>
+      </label>
+      <label>Deutsch
+        <input id="germanInput" required autocomplete="off" placeholder="z. B. das Fenster">
+      </label>
+      <label>Gruppe <small>(optional)</small>
+        <input id="groupInput" list="groupSuggestions" autocomplete="off" placeholder="z. B. Reisen oder Lektion 3">
+        <datalist id="groupSuggestions"></datalist>
+      </label>
+      <label>Notiz <small>(optional)</small>
+        <input id="noteInput" autocomplete="off" placeholder="Beispielsatz oder Hinweis">
+      </label>
+      <button class="primary-button full" value="default" type="submit">Speichern</button>
+      <button class="danger-button" id="deleteWord" type="button" hidden>Vokabel löschen</button>
+    </form>
+  </dialog>
+
+  <dialog id="studyDialog" class="study-dialog">
+    <section class="study-card">
+      <header class="study-header">
+        <button class="round-button" id="closeStudy" aria-label="Übung schließen">×</button>
+        <div class="progress-track"><span id="studyProgress"></span></div>
+        <span id="studyPosition">1/1</span>
+      </header>
+      <div id="studyContent" class="study-content"></div>
+      <div id="studyActions" class="study-actions"></div>
+    </section>
+  </dialog>
+
+  <dialog id="backupDialog">
+    <section class="dialog-card">
+      <button class="dialog-close" id="closeBackup" aria-label="Schließen">×</button>
+      <p class="section-kicker">Deine Daten</p>
+      <h2>Sichern & wiederherstellen</h2>
+      <p>Alle Wörter bleiben nur in diesem Browser. Lade regelmäßig eine Sicherungsdatei herunter.</p>
+      <button class="primary-button full" id="exportData">Sicherung herunterladen</button>
+      <label class="file-button">Sicherung einlesen
+        <input type="file" id="importData" accept="application/json,.json">
+      </label>
+      <p class="small-note">Beim Einlesen wird deine aktuelle Sammlung ersetzt. Vorher wird automatisch eine Sicherung heruntergeladen.</p>
+    </section>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

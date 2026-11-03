@@ -1,0 +1,19 @@
+{
+  "name": "Parola – Italienisch lernen",
+  "short_name": "Parola",
+  "description": "Dein privater Italienisch-Vokabeltrainer für Lernkarten, Schreiben und Sprechen.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f3ea",
+  "theme_color": "#f7f3ea",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
