@@ -1,6 +1,6 @@
 # Parola – Italienisch-Vokabeltrainer
 
-Parola ist eine kleine, installierbare Web-App zum Lernen eigener italienischer Vokabeln auf dem iPhone. Sie benötigt keine App-Store-Veröffentlichung und speichert die persönlichen Lerninhalte ausschließlich lokal im Browser.
+Parola ist ein privater Italienisch-Vokabeltrainer für das iPhone. Das Projekt enthält sowohl die installierbare Web-App als auch eine native iOS-Verpackung, die sich ohne App-Store-Veröffentlichung auf dem eigenen iPhone testen lässt. Persönliche Lerninhalte bleiben lokal auf dem jeweiligen Gerät.
 
 ## Aktueller Stand
 
@@ -24,12 +24,15 @@ Enthalten sind:
 - Web-App-Manifest, App-Symbol und Offline-Cache
 - responsive Bedienoberfläche für das iPhone
 - eingebauter Vokabelkatalog aus dem Ordner `INBOUND`
+- natives iOS-Projekt mit App-Symbol, Startbildschirm und iPhone-Berechtigungen
+- native Spracherkennung in der iPhone-App mit italienischer Sprache (`it-IT`)
+- native Sicherung über das iOS-Teilen-Menü
 
-## Noch offen
+## iPhone-App testen
 
-1. Eine kostenlose HTTPS-Adresse einrichten und die Web-App veröffentlichen.
-2. Spracherkennung und Installation auf dem tatsächlichen iPhone testen.
-3. Bei Bedarf Lernstatistiken, Kategorien oder eine umkehrbare Abfragerichtung ergänzen.
+Das iOS-Projekt liegt im Ordner `ios`. Die Web-App wird dafür mit Capacitor in eine echte iPhone-App eingebettet. Die letzte Kompilierung und Installation muss auf einem Mac mit Xcode erfolgen; Apple stellt Xcode nicht für Windows bereit.
+
+Die vollständige Anleitung steht in [IOS-TEST.md](IOS-TEST.md). Für einen Test auf dem eigenen iPhone genügt ein kostenloser Apple-Account. Eine kostenpflichtige Mitgliedschaft wird erst für TestFlight oder eine Veröffentlichung benötigt.
 
 ## Projektstruktur
 
@@ -39,6 +42,10 @@ Enthalten sind:
 - `manifest.webmanifest` – Installation als Web-App
 - `sw.js` – Offline-Cache
 - `assets/icon.svg` – App-Symbol
+- `assets/logo.svg` – hochauflösende Quelle für das native App-Symbol
+- `capacitor.config.json` – Einstellungen der iPhone-Verpackung
+- `ios` – das von Xcode verwendete iOS-Projekt
+- `tools/build-native.mjs` – übernimmt den aktuellen Web-Stand in die iPhone-App
 - `AGENTS.md` – dauerhafte Hinweise für zukünftige Codex-Chats
 
 ## Lokal testen
@@ -55,7 +62,7 @@ Danach im Browser `http://127.0.0.1:8765` öffnen.
 
 ## Speicherung und Sicherung
 
-Die Vokabeln liegen im `localStorage` des jeweiligen Browsers unter dem Schlüssel `parola-v1`. Sie sind nicht automatisch zwischen Geräten synchronisiert. Deshalb regelmäßig im Bereich **Sicherung** eine JSON-Datei herunterladen.
+Die Vokabeln liegen im `localStorage` des jeweiligen Browsers beziehungsweise der iPhone-App unter dem Schlüssel `parola-v1`. Web-App und native App besitzen getrennte Speicherbereiche und werden nicht automatisch synchronisiert. Deshalb regelmäßig im Bereich **Sicherung** eine JSON-Datei sichern. In der iPhone-App öffnet sich dafür das iOS-Teilen-Menü.
 
 Beim Import einer Sicherung wird die vorhandene Sammlung ersetzt. Wenn bereits Wörter vorhanden sind, lädt Parola vorher automatisch eine Sicherung herunter.
 

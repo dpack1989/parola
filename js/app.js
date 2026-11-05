@@ -14,6 +14,7 @@ const state = {
   selectedGroup: "",
   speechSolved: false,
   speechAutoActive: false,
+  nativeRecognitionActive: false,
   speechRestartTimer: null,
   speechPlaybackTimer: null,
   speechPlaybackStarted: false,
@@ -167,6 +168,11 @@ function uid() {
   return crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+function nativePlugin(name) {
+  if (!window.Capacitor?.isNativePlatform?.()) return null;
+  return window.Capacitor?.Plugins?.[name] || null;
+}
+
 function openWord(word = null) {
   els.wordForm.reset();
   els.editId.value = word?.id || "";
@@ -291,7 +297,7 @@ function renderWrite(word) {
 }
 
 function renderSpeak(word) {
-  const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  const supported = !!(nativePlugin("SpeechRecognition") || window.SpeechRecognition || window.webkitSpeechRecognition);
   els.studyContent.innerHTML = `
     <div class="study-prompt">
       <p class="language">Sage es auf Italienisch</p>
@@ -351,8 +357,9 @@ function repeatSpokenAnswer(word) {
 function finishSpokenWord(word, heard = "") {
   if (state.speechSolved) return;
   state.speechSolved = true;
-  const recognitionWasActive = !!state.recognition;
+  const recognitionWasActive = !!state.recognition || state.nativeRecognitionActive;
   state.recognition?.stop?.();
+  nativePlugin("SpeechRecognition")?.stop?.().catch(() => {});
   recordSuccess(word);
   const nextDays = Math.max(1, Math.round(6 - (word.difficulty || 0)));
   word.interval = nextDays;
@@ -410,7 +417,56 @@ function checkTyped(value, word) {
   reveal(word, feedback.innerHTML);
 }
 
+async function startNativeRecognition(word) {
+  const recognition = nativePlugin("SpeechRecognition");
+  if (!recognition || state.speechSolved || state.nativeRecognitionActive || currentMode() !== "speak") return;
+
+  state.speechAutoActive = true;
+  state.nativeRecognitionActive = true;
+  const button = $("#recordButton");
+  const feedback = $("#feedback");
+  button?.classList.add("listening");
+  if (feedback) feedback.textContent = "Ich höre zu …";
+
+  try {
+    let permission = await recognition.checkPermissions();
+    if (permission.speechRecognition !== "granted") permission = await recognition.requestPermissions();
+    if (permission.speechRecognition !== "granted") {
+      if (feedback) feedback.textContent = "Bitte erlaube Mikrofon und Spracherkennung in den iPhone-Einstellungen.";
+      state.speechAutoActive = false;
+      return;
+    }
+
+    const result = await recognition.start({ language: "it-IT", maxResults: 3, partialResults: false, popup: false });
+    const alternatives = Array.isArray(result.matches) ? result.matches : [];
+    const heard = alternatives[0] || "";
+    const fallback = $("#speechFallback");
+    if (fallback) fallback.value = heard;
+    if (!heard) {
+      if (feedback) feedback.textContent = "Ich habe nichts verstanden. Versuch es noch einmal oder nutze die Diktierfunktion.";
+    } else if (alternatives.some((value) => normalize(value) === normalize(word.italian))) {
+      finishSpokenWord(word, heard);
+    } else {
+      processSpokenAttempt(heard, word);
+    }
+  } catch {
+    if (!state.speechSolved && feedback) feedback.textContent = "Das hat nicht geklappt. Sprich noch einmal oder nutze unten die Diktierfunktion.";
+  } finally {
+    state.nativeRecognitionActive = false;
+    button?.classList.remove("listening");
+    if (state.speechSolved) {
+      repeatSpokenAnswer(word);
+    } else if (state.speechAutoActive && els.studyDialog.open && currentMode() === "speak") {
+      state.speechRestartTimer = setTimeout(() => startNativeRecognition(word), 700);
+    }
+  }
+}
+
 function startRecognition(word) {
+  if (nativePlugin("SpeechRecognition")) {
+    startNativeRecognition(word);
+    return;
+  }
   const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Recognition || state.speechSolved || currentMode() !== "speak") return;
   state.speechAutoActive = true;
@@ -484,12 +540,25 @@ function toast(message) {
   toast.timer = setTimeout(() => els.toast.classList.remove("show"), 2600);
 }
 
-function exportData() {
+async function exportData() {
   const payload = JSON.stringify({ version: 1, app: "Parola", catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words }, null, 2);
+  const filename = `parola-sicherung-${new Date().toISOString().slice(0, 10)}.json`;
+  const filesystem = nativePlugin("Filesystem");
+  const share = nativePlugin("Share");
+  if (filesystem && share) {
+    try {
+      const saved = await filesystem.writeFile({ path: filename, data: payload, directory: "CACHE", encoding: "utf8" });
+      await share.share({ title: "Parola-Sicherung", text: "Sicherung deiner Parola-Vokabeln", files: [saved.uri] });
+      return;
+    } catch {
+      toast("Die Sicherung konnte nicht zum Teilen geöffnet werden.");
+      return;
+    }
+  }
   const blob = new Blob([payload], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `parola-sicherung-${new Date().toISOString().slice(0, 10)}.json`;
+  link.download = filename;
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
@@ -498,7 +567,7 @@ async function importData(file) {
   try {
     const parsed = JSON.parse(await file.text());
     if (!Array.isArray(parsed.words) || parsed.words.some((word) => !word.italian || !word.german)) throw new Error();
-    if (state.words.length) exportData();
+    if (state.words.length) await exportData();
     state.words = parsed.words.map(normalizeWordData);
     state.catalogVersion = parsed.catalogVersion || state.catalogVersion;
     persist();
@@ -553,6 +622,8 @@ document.addEventListener("click", (event) => {
     clearTimeout(state.speechPlaybackTimer);
     clearTimeout(state.autoAdvanceTimer);
     state.recognition?.abort?.();
+    nativePlugin("SpeechRecognition")?.stop?.().catch(() => {});
+    state.nativeRecognitionActive = false;
     window.speechSynthesis?.cancel?.();
     els.studyDialog.close();
   }

@@ -1,0 +1,10 @@
+{
+  "appId": "com.dpack1989.parola",
+  "appName": "Parola",
+  "webDir": "www",
+  "ios": {
+    "backgroundColor": "#f7f3ea",
+    "contentInset": "always",
+    "preferredContentMode": "mobile"
+  }
+}

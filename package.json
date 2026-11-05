@@ -1,0 +1,24 @@
+{
+  "name": "parola-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Native iOS-Verpackung für den privaten Parola-Vokabeltrainer",
+  "scripts": {
+    "web:native": "node tools/build-native.mjs",
+    "ios:add": "npm run web:native && cap add ios --packagemanager CocoaPods",
+    "ios:sync": "npm run web:native && cap sync ios",
+    "ios:assets": "capacitor-assets generate --ios --iconBackgroundColor #21302b --iconBackgroundColorDark #21302b --splashBackgroundColor #f7f3ea --splashBackgroundColorDark #21302b",
+    "ios:open": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor-community/speech-recognition": "7.0.1",
+    "@capacitor/core": "8.6.0",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/ios": "8.6.0",
+    "@capacitor/share": "8.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "4.0.0",
+    "@capacitor/cli": "8.6.0"
+  }
+}

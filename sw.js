@@ -1,4 +1,4 @@
-const CACHE = "parola-v6";
+const CACHE = "parola-v7";
 const ASSETS = ["./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./assets/icon.svg", "./data/vocabulary.json"];
 
 self.addEventListener("install", (event) => {
