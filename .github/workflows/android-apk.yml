@@ -38,7 +38,9 @@ jobs:
 
       - name: Debug-APK bauen
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       - name: APK bereitstellen
         uses: actions/upload-artifact@v6
