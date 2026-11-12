@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Parola</string>
+    <string name="title_activity_main">Parola</string>
+    <string name="package_name">com.dpack1989.parola</string>
+    <string name="custom_url_scheme">com.dpack1989.parola</string>
+</resources>

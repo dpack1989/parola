@@ -1,17 +1,26 @@
 {
-  "name": "parola-ios",
+  "name": "parola",
   "version": "1.0.0",
   "private": true,
-  "description": "Native iOS-Verpackung für den privaten Parola-Vokabeltrainer",
+  "description": "Privater Parola-Vokabeltrainer für Web, iOS, Android und Windows",
+  "main": "desktop/main.cjs",
   "scripts": {
     "web:native": "node tools/build-native.mjs",
     "ios:add": "npm run web:native && cap add ios --packagemanager CocoaPods",
     "ios:sync": "npm run web:native && cap sync ios",
     "ios:assets": "capacitor-assets generate --ios --iconBackgroundColor #21302b --iconBackgroundColorDark #21302b --splashBackgroundColor #f7f3ea --splashBackgroundColorDark #21302b",
-    "ios:open": "cap open ios"
+    "ios:open": "cap open ios",
+    "android:sync": "npm run web:native && cap sync android",
+    "android:assets": "capacitor-assets generate --android --iconBackgroundColor #21302b --iconBackgroundColorDark #21302b --splashBackgroundColor #f7f3ea --splashBackgroundColorDark #21302b",
+    "android:open": "cap open android",
+    "android:apk": "npm run android:sync && cd android && gradlew.bat assembleDebug",
+    "desktop:start": "npm run web:native && electron .",
+    "desktop:assets": "node tools/build-desktop-icon.mjs",
+    "desktop:build": "npm run web:native && npm run desktop:assets && electron-builder --win portable --x64"
   },
   "dependencies": {
     "@capacitor-community/speech-recognition": "7.0.1",
+    "@capacitor/android": "8.6.0",
     "@capacitor/core": "8.6.0",
     "@capacitor/filesystem": "8.1.5",
     "@capacitor/ios": "8.6.0",
@@ -19,6 +28,29 @@
   },
   "devDependencies": {
     "@capacitor/assets": "4.0.0",
-    "@capacitor/cli": "8.6.0"
+    "@capacitor/cli": "8.6.0",
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.dpack1989.parola.desktop",
+    "productName": "Parola",
+    "asar": true,
+    "files": [
+      "desktop/main.cjs",
+      "desktop/preload.cjs",
+      "www/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "desktop/dist"
+    },
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "desktop/assets/icon.png",
+      "artifactName": "Parola-Windows-${version}.${ext}"
+    }
   }
 }

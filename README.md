@@ -1,6 +1,6 @@
 # Parola – Italienisch-Vokabeltrainer
 
-Parola ist ein privater Italienisch-Vokabeltrainer für das iPhone. Das Projekt enthält sowohl die installierbare Web-App als auch eine native iOS-Verpackung, die sich ohne App-Store-Veröffentlichung auf dem eigenen iPhone testen lässt. Persönliche Lerninhalte bleiben lokal auf dem jeweiligen Gerät.
+Parola ist ein privater Italienisch-Vokabeltrainer für Web, iPhone, Android und Windows. Persönliche Lerninhalte bleiben lokal auf dem jeweiligen Gerät.
 
 ## Aktueller Stand
 
@@ -27,12 +27,22 @@ Enthalten sind:
 - natives iOS-Projekt mit App-Symbol, Startbildschirm und iPhone-Berechtigungen
 - native Spracherkennung in der iPhone-App mit italienischer Sprache (`it-IT`)
 - native Sicherung über das iOS-Teilen-Menü
+- native Android-App mit automatisch gebauter Test-APK
+- eigenständiges, portables Windows-Programm
 
 ## iPhone-App testen
 
 Das iOS-Projekt liegt im Ordner `ios`. Die Web-App wird dafür mit Capacitor in eine echte iPhone-App eingebettet. Die letzte Kompilierung und Installation muss auf einem Mac mit Xcode erfolgen; Apple stellt Xcode nicht für Windows bereit.
 
 Die vollständige Anleitung steht in [IOS-TEST.md](IOS-TEST.md). Für einen Test auf dem eigenen iPhone genügt ein kostenloser Apple-Account. Eine kostenpflichtige Mitgliedschaft wird erst für TestFlight oder eine Veröffentlichung benötigt.
+
+## Android-App
+
+Das vollständige Android-Projekt liegt in `android`. Nach dem Hochladen baut GitHub automatisch eine testbare Debug-APK; die Anleitung zum Herunterladen und zur lokalen Arbeit mit Android Studio steht in [android/README.md](android/README.md).
+
+## Windows-Programm
+
+Das eigenständige PC-Programm liegt in `desktop`. Mit `npm run desktop:build` entsteht die portable Datei `desktop/dist/Parola-Windows-1.0.0.exe`. Sie benötigt keine Installation. Weitere Hinweise stehen in [desktop/README.md](desktop/README.md).
 
 ## Projektstruktur
 
@@ -45,6 +55,8 @@ Die vollständige Anleitung steht in [IOS-TEST.md](IOS-TEST.md). Für einen Test
 - `assets/logo.svg` – hochauflösende Quelle für das native App-Symbol
 - `capacitor.config.json` – Einstellungen der iPhone-Verpackung
 - `ios` – das von Xcode verwendete iOS-Projekt
+- `android` – eigenständiges Android-Studio-Projekt
+- `desktop` – eigenständige Windows-Verpackung
 - `tools/build-native.mjs` – übernimmt den aktuellen Web-Stand in die iPhone-App
 - `AGENTS.md` – dauerhafte Hinweise für zukünftige Codex-Chats
 

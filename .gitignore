@@ -3,3 +3,8 @@ www/
 .DS_Store
 *.xcuserstate
 xcuserdata/
+desktop/dist/
+desktop/assets/icon.png
+android/.gradle/
+android/local.properties
+android/app/build/
