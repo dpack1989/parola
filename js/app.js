@@ -15,6 +15,9 @@ const state = {
   libraryQuery: "",
   librarySort: "italian",
   libraryDirection: "it-de",
+  quickTotal: 0,
+  quickCorrect: 0,
+  quickMistakes: 0,
   speechSolved: false,
   speechAutoActive: false,
   nativeRecognitionActive: false,
@@ -255,6 +258,18 @@ function buildSession(mode) {
     toast("In dieser Gruppe sind noch keine Vokabeln.");
     return;
   }
+  if (mode === "quick") {
+    state.session = shuffle([...source]).slice(0, Math.min(30, source.length));
+    state.quickTotal = state.session.length;
+    state.quickCorrect = 0;
+    state.quickMistakes = 0;
+    state.index = 0;
+    state.mode = mode;
+    state.revealed = false;
+    els.studyDialog.showModal();
+    renderStudy();
+    return;
+  }
   const now = Date.now();
   const ordered = shuffle([...source]).sort((a, b) => {
     const aDue = !a.due || new Date(a.due).getTime() <= now ? 1 : 0;
@@ -295,18 +310,20 @@ function renderStudy() {
   state.speechSolved = false;
   state.speechPlaybackStarted = false;
   const mode = currentMode();
-  els.studyPosition.textContent = `${state.index + 1}/${state.session.length}`;
-  els.studyProgress.style.width = `${(state.index / state.session.length) * 100}%`;
+  const isQuick = state.mode === "quick";
+  els.studyPosition.textContent = isQuick ? `${state.quickCorrect}/${state.quickTotal}` : `${state.index + 1}/${state.session.length}`;
+  els.studyProgress.style.width = `${isQuick ? (state.quickCorrect / state.quickTotal) * 100 : (state.index / state.session.length) * 100}%`;
 
-  if (mode === "cards") renderCard(word);
+  if (mode === "cards" || mode === "quick") renderCard(word);
   if (mode === "write") renderWrite(word);
   if (mode === "speak") renderSpeak(word);
 }
 
 function renderCard(word) {
+  const quick = state.mode === "quick";
   els.studyContent.innerHTML = `
     <div class="study-prompt">
-      <p class="language">Tippe auf die Karte zum Umdrehen</p>
+      <p class="language">${quick ? "Schnelle Übung · erst überlegen, dann aufdecken" : "Tippe auf die Karte zum Umdrehen"}</p>
       <button class="flashcard" id="flashcard" type="button" aria-label="Deutsches Wort aufdecken: ${escapeHtml(word.german)}">
         <span class="flashcard-inner">
           <span class="flashcard-face flashcard-front" data-card-front aria-hidden="false">
@@ -437,7 +454,7 @@ function processSpokenAttempt(value, word) {
 }
 
 function reveal(word, message = "") {
-  if (currentMode() === "cards") {
+  if (currentMode() === "cards" || currentMode() === "quick") {
     const card = $("#flashcard");
     if (state.revealed) {
       speak(word.italian);
@@ -449,12 +466,19 @@ function reveal(word, message = "") {
     $("[data-card-front]")?.setAttribute("aria-hidden", "true");
     $("[data-card-back]")?.setAttribute("aria-hidden", "false");
     speak(word.italian);
-    els.studyActions.className = "study-actions four";
-    els.studyActions.innerHTML = `
-      <button class="rating-button" data-rate="again">Nochmal<small>gleich</small></button>
-      <button class="rating-button" data-rate="hard">Schwer<small>1 Tag</small></button>
-      <button class="rating-button" data-rate="good">Gut<small>ein paar Tage</small></button>
-      <button class="rating-button" data-rate="easy">Leicht<small>später</small></button>`;
+    if (state.mode === "quick") {
+      els.studyActions.className = "study-actions quick-actions";
+      els.studyActions.innerHTML = `
+        <button class="rating-button quick-again" data-quick-result="again">Noch einmal<small>kommt erneut</small></button>
+        <button class="rating-button quick-known" data-quick-result="known">Gewusst<small>geschafft</small></button>`;
+    } else {
+      els.studyActions.className = "study-actions four";
+      els.studyActions.innerHTML = `
+        <button class="rating-button" data-rate="again">Nochmal<small>gleich</small></button>
+        <button class="rating-button" data-rate="hard">Schwer<small>1 Tag</small></button>
+        <button class="rating-button" data-rate="good">Gut<small>ein paar Tage</small></button>
+        <button class="rating-button" data-rate="easy">Leicht<small>später</small></button>`;
+    }
     return;
   }
   state.revealed = true;
@@ -467,6 +491,20 @@ function reveal(word, message = "") {
     <button class="rating-button" data-rate="hard">Schwer<small>1 Tag</small></button>
     <button class="rating-button" data-rate="good">Gut<small>ein paar Tage</small></button>
     <button class="rating-button" data-rate="easy">Leicht<small>später</small></button>`;
+}
+
+function answerQuick(word, known) {
+  if (known) {
+    recordSuccess(word);
+    state.quickCorrect += 1;
+  } else {
+    recordMistake(word);
+    state.quickMistakes += 1;
+    state.session.push(word);
+  }
+  persist();
+  state.index += 1;
+  renderStudy();
 }
 
 function checkTyped(value, word) {
@@ -590,7 +628,12 @@ function schedule(word, rating) {
 
 function finishSession() {
   els.studyProgress.style.width = "100%";
-  els.studyContent.innerHTML = `<div><div class="empty-illustration">bravo!</div><h2>Runde geschafft</h2><p>Du hast ${state.session.length} ${state.session.length === 1 ? "Wort" : "Wörter"} wiederholt.</p></div>`;
+  const quick = state.mode === "quick";
+  const count = quick ? state.quickTotal : state.session.length;
+  const detail = quick
+    ? `${count} ${count === 1 ? "Wort" : "Wörter"} geschafft${state.quickMistakes ? ` · ${state.quickMistakes} ${state.quickMistakes === 1 ? "Wiederholung" : "Wiederholungen"} nötig` : " · alles beim ersten Mal gewusst"}.`
+    : `Du hast ${count} ${count === 1 ? "Wort" : "Wörter"} wiederholt.`;
+  els.studyContent.innerHTML = `<div><div class="empty-illustration">bravo!</div><h2>${quick ? "Schnelle Übung geschafft" : "Runde geschafft"}</h2><p>${detail}</p></div>`;
   els.studyActions.className = "study-actions";
   els.studyActions.innerHTML = `<button class="primary-button full" id="finishStudy">Fertig</button>`;
   render();
@@ -700,6 +743,7 @@ document.addEventListener("click", (event) => {
   if (target.id === "showSpeechAnswer") showSpeechAnswer(word);
   if (target.id === "checkSpeech") processSpokenAttempt($("#speechFallback").value, word);
   if (target.dataset.rate) schedule(word, target.dataset.rate);
+  if (target.dataset.quickResult) answerQuick(word, target.dataset.quickResult === "known");
 });
 
 document.addEventListener("keydown", (event) => {
