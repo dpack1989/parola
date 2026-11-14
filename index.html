@@ -78,6 +78,27 @@
           <p>Trage die Wörter aus deiner nächsten Duolingo-Lektion ein.</p>
           <button class="secondary-button" id="emptyAdd">Erstes Wort hinzufügen</button>
         </div>
+        <div class="library-tools" id="libraryTools">
+          <label class="search-field" for="wordSearch">Vokabeln durchsuchen
+            <input type="search" id="wordSearch" autocomplete="off" placeholder="Italienisch, Deutsch oder Gruppe">
+          </label>
+          <div class="library-options">
+            <label for="wordSort">Sortieren
+              <select id="wordSort">
+                <option value="italian">Italienisch A–Z</option>
+                <option value="german">Deutsch A–Z</option>
+                <option value="group">Gruppe</option>
+                <option value="mistakes">Meiste Fehler</option>
+              </select>
+            </label>
+            <button class="direction-button" id="swapWordDirection" type="button" aria-pressed="false">
+              <span id="wordDirectionLabel">Italienisch → Deutsch</span>
+              <strong aria-hidden="true">⇄</strong>
+            </button>
+          </div>
+          <p class="result-count" id="wordResults" aria-live="polite"></p>
+        </div>
+        <div class="filtered-empty" id="filteredEmpty" hidden>Keine passende Vokabel gefunden.</div>
         <div class="word-list" id="wordList"></div>
       </section>
     </main>

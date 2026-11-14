@@ -1,6 +1,6 @@
 {
-  "version": "20261103141133",
-  "generatedAt": "2026-11-03T14:11:33.1402405Z",
+  "version": "20261114125802",
+  "generatedAt": "2026-11-14T12:58:01.9536568Z",
   "sourceFile": "vokabeln.txt",
   "words": [
     {
@@ -58,6 +58,24 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-bdafd7b1ab8272c5",
+      "italian": "amica",
+      "german": "Freundin",
+      "group": "Freunde & Bekannte",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
+      "id": "catalog-a3bdc32d32196bc4",
+      "italian": "amico",
+      "german": "Freund, Kumpel",
+      "group": "Freunde & Bekannte",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-1336f75d667b5cc7",
       "italian": "anche",
       "german": "auch",
@@ -65,6 +83,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-05116d996d88a895",
+      "italian": "appartamento",
+      "german": "Wohnung, Appartement",
+      "group": "Zuhause & Alltag",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-038e711629259584",
@@ -92,6 +119,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-60e9764981a31bf1",
+      "italian": "bagno",
+      "german": "Badezimmer, Toilette",
+      "group": "Zuhause & Alltag",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-b493d48364afe44d",
@@ -157,6 +193,15 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-5c2b45563254ed1c",
+      "italian": "birra",
+      "german": "Bier",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-9fc1b6fdfeeaecc2",
       "italian": "biscotto",
       "german": "Keks, Gebäckstück",
@@ -182,6 +227,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-07337eafde84dd71",
+      "italian": "buon compleanno",
+      "german": "Alles Gute zum Geburtstag",
+      "group": "Feste & Geschenke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-26eeb57586214e0e",
@@ -229,6 +283,15 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-1371fff46ba84b7c",
+      "italian": "caldo",
+      "german": "warm, heiß",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-a524a169e45307d9",
       "italian": "camerino",
       "german": "Umkleidekabine",
@@ -245,6 +308,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-df39220189ca8225",
+      "italian": "cane",
+      "german": "Hund",
+      "group": "Zuhause & Alltag",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-2efe342d40463a2d",
@@ -382,6 +454,24 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-b133a0c0e9bee3be",
+      "italian": "ciao",
+      "german": "Hallo, Tschüss",
+      "group": "Begrüßung & Abschied",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
+      "id": "catalog-905931cb9f5bd52d",
+      "italian": "cibo",
+      "german": "Essen",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-a05dcb75ec375b1f",
       "italian": "cinese",
       "german": "chinesisch",
@@ -407,6 +497,24 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-d7a304c25f2f1e83",
+      "italian": "compagna di classe",
+      "german": "Klassenkameradin",
+      "group": "Freunde & Bekannte",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
+      "id": "catalog-f4eb3be4901ca526",
+      "italian": "compagno di classe",
+      "german": "Klassenkamerad",
+      "group": "Freunde & Bekannte",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-1143da2bc54c495c",
@@ -940,6 +1048,24 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-a6ae07ad556c5f93",
+      "italian": "mia",
+      "german": "meine",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
+      "id": "catalog-ea31ac1d48d1880b",
+      "italian": "mio",
+      "german": "mein",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-8668bd4d53eecc6e",
       "italian": "mirtillo",
       "german": "Heidelbeere, Blaubeere",
@@ -1120,6 +1246,15 @@
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
     },
     {
+      "id": "catalog-a4c18ee0ada59e34",
+      "italian": "pasta",
+      "german": "Pasta, Nudeln",
+      "group": "Essen & Getränke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
+    },
+    {
       "id": "catalog-da248eeaffa573da",
       "italian": "patata",
       "german": "Kartoffel",
@@ -1127,6 +1262,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-b427c3dec9045990",
+      "italian": "per",
+      "german": "für, um, zu",
+      "group": "Grammatik & Grundlagen",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-f3a79ab6a3724bfd",
@@ -1280,6 +1424,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-1a78c2c9d1b6dd74",
+      "italian": "regalo",
+      "german": "Geschenk",
+      "group": "Feste & Geschenke",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-0e151beee3ce8e97",
@@ -1640,6 +1793,15 @@
       "note": "",
       "source": "catalog",
       "catalogUpdatedAt": "2026-11-03T14:11:33.1402405Z"
+    },
+    {
+      "id": "catalog-d19011eed2765c39",
+      "italian": "vicina",
+      "german": "Nachbarin",
+      "group": "Freunde & Bekannte",
+      "note": "",
+      "source": "catalog",
+      "catalogUpdatedAt": "2026-11-14T12:58:01.9536568Z"
     },
     {
       "id": "catalog-4a711770d61b69ae",

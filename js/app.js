@@ -12,6 +12,9 @@ const state = {
   revealed: false,
   recognition: null,
   selectedGroup: "",
+  libraryQuery: "",
+  librarySort: "italian",
+  libraryDirection: "it-de",
   speechSolved: false,
   speechAutoActive: false,
   nativeRecognitionActive: false,
@@ -27,6 +30,9 @@ const $$ = (selector) => [...document.querySelectorAll(selector)];
 const els = {
   dueCount: $("#dueCount"), dueLabel: $("#dueLabel"), todayHint: $("#todayHint"), wordCount: $("#wordCount"),
   wordList: $("#wordList"), emptyState: $("#emptyState"), wordDialog: $("#wordDialog"),
+  libraryTools: $("#libraryTools"), wordSearch: $("#wordSearch"), wordSort: $("#wordSort"),
+  wordResults: $("#wordResults"), filteredEmpty: $("#filteredEmpty"),
+  swapWordDirection: $("#swapWordDirection"), wordDirectionLabel: $("#wordDirectionLabel"),
   wordForm: $("#wordForm"), wordDialogTitle: $("#wordDialogTitle"), editId: $("#editId"),
   italian: $("#italianInput"), german: $("#germanInput"), group: $("#groupInput"), note: $("#noteInput"),
   trainingGroup: $("#trainingGroup"), groupSuggestions: $("#groupSuggestions"),
@@ -128,19 +134,45 @@ function render() {
     ? (due ? "Kurze Wiederholungen bringen dich heute am weitesten." : "Alles geschafft – du kannst trotzdem frei weiterüben.")
     : "Füge deine ersten Vokabeln hinzu und starte deine Lernserie.";
   els.emptyState.hidden = state.words.length > 0;
-  els.wordList.hidden = state.words.length === 0;
+  els.libraryTools.hidden = state.words.length === 0;
   renderGroups();
-  els.wordList.innerHTML = [...state.words]
-    .sort((a, b) => a.italian.localeCompare(b.italian, "it"))
+  renderWordList();
+}
+
+function renderWordList() {
+  const query = normalize(state.libraryQuery);
+  const visibleWords = state.words.filter((word) => !query || [word.italian, word.german, word.group, word.note]
+    .some((value) => normalize(value || "").includes(query)));
+  const compareText = (a, b, field, locale) => (a[field] || "").localeCompare(b[field] || "", locale, { sensitivity: "base" });
+  visibleWords.sort((a, b) => {
+    if (state.librarySort === "german") return compareText(a, b, "german", "de");
+    if (state.librarySort === "group") return compareText(a, b, "group", "de") || compareText(a, b, "italian", "it");
+    if (state.librarySort === "mistakes") return (b.mistakeCount || 0) - (a.mistakeCount || 0) || compareText(a, b, "italian", "it");
+    return compareText(a, b, "italian", "it");
+  });
+
+  const germanFirst = state.libraryDirection === "de-it";
+  els.wordDirectionLabel.textContent = germanFirst ? "Deutsch → Italienisch" : "Italienisch → Deutsch";
+  els.swapWordDirection.setAttribute("aria-pressed", String(germanFirst));
+  els.wordResults.textContent = query ? `${visibleWords.length} von ${state.words.length} Vokabeln` : `${state.words.length} Vokabeln`;
+  els.filteredEmpty.hidden = visibleWords.length > 0 || state.words.length === 0;
+  els.wordList.hidden = visibleWords.length === 0;
+  els.wordList.innerHTML = visibleWords
     .map((word) => `
       <article class="word-row">
-        <div><strong>${escapeHtml(word.italian)}</strong><small>${escapeHtml(word.german)}${word.note ? ` · ${escapeHtml(word.note)}` : ""}</small>
-          ${(word.group || word.mistakeCount) ? `<div class="word-meta">${word.group ? `<span class="word-tag">${escapeHtml(word.group)}</span>` : ""}${word.mistakeCount ? `<span class="word-tag errors">${word.mistakeCount} Fehler</span>` : ""}</div>` : ""}
+        <div class="word-term">
+          <small>${germanFirst ? "Deutsch" : "Italienisch"}</small>
+          <strong>${escapeHtml(germanFirst ? word.german : word.italian)}</strong>
+        </div>
+        <div class="word-term secondary">
+          <small>${germanFirst ? "Italienisch" : "Deutsch"}</small>
+          <strong>${escapeHtml(germanFirst ? word.italian : word.german)}</strong>
         </div>
         <div class="word-actions">
           <button class="mini-button" data-speak="${word.id}" aria-label="${escapeHtml(word.italian)} anhören">🔊</button>
           <button class="mini-button" data-edit="${word.id}" aria-label="Vokabel bearbeiten">✎</button>
         </div>
+        ${(word.group || word.mistakeCount || word.note) ? `<div class="word-meta">${word.group ? `<span class="word-tag">${escapeHtml(word.group)}</span>` : ""}${word.mistakeCount ? `<span class="word-tag errors">${word.mistakeCount} Fehler</span>` : ""}${word.note ? `<span class="word-note">${escapeHtml(word.note)}</span>` : ""}</div>` : ""}
       </article>`).join("");
 }
 
@@ -274,13 +306,24 @@ function renderStudy() {
 function renderCard(word) {
   els.studyContent.innerHTML = `
     <div class="study-prompt">
-      <p class="language">Italienisch</p>
-      <div class="study-word">${escapeHtml(word.italian)}</div>
-      <button class="speak-button" data-study-speak aria-label="Aussprache anhören">🔊</button>
-      <div id="revealArea"></div>
+      <p class="language">Tippe auf die Karte zum Umdrehen</p>
+      <button class="flashcard" id="flashcard" type="button" aria-label="Deutsches Wort aufdecken: ${escapeHtml(word.german)}">
+        <span class="flashcard-inner">
+          <span class="flashcard-face flashcard-front" data-card-front aria-hidden="false">
+            <small>Deutsch</small>
+            <strong>${escapeHtml(word.german)}</strong>
+            <em>Antippen zum Aufdecken</em>
+          </span>
+          <span class="flashcard-face flashcard-back" data-card-back aria-hidden="true">
+            <small>Italienisch</small>
+            <strong>${escapeHtml(word.italian)}</strong>
+            ${word.note ? `<em>${escapeHtml(word.note)}</em>` : `<em>Noch einmal tippen, um es zu hören</em>`}
+          </span>
+        </span>
+      </button>
     </div>`;
   els.studyActions.className = "study-actions";
-  els.studyActions.innerHTML = `<button class="primary-button full" id="revealButton">Antwort zeigen</button>`;
+  els.studyActions.innerHTML = `<button class="primary-button full" id="revealButton">Karte umdrehen</button>`;
 }
 
 function renderWrite(word) {
@@ -394,9 +437,29 @@ function processSpokenAttempt(value, word) {
 }
 
 function reveal(word, message = "") {
+  if (currentMode() === "cards") {
+    const card = $("#flashcard");
+    if (state.revealed) {
+      speak(word.italian);
+      return;
+    }
+    state.revealed = true;
+    card?.classList.add("flipped");
+    card?.setAttribute("aria-label", `Italienisch: ${word.italian}. Noch einmal tippen zum Anhören.`);
+    $("[data-card-front]")?.setAttribute("aria-hidden", "true");
+    $("[data-card-back]")?.setAttribute("aria-hidden", "false");
+    speak(word.italian);
+    els.studyActions.className = "study-actions four";
+    els.studyActions.innerHTML = `
+      <button class="rating-button" data-rate="again">Nochmal<small>gleich</small></button>
+      <button class="rating-button" data-rate="hard">Schwer<small>1 Tag</small></button>
+      <button class="rating-button" data-rate="good">Gut<small>ein paar Tage</small></button>
+      <button class="rating-button" data-rate="easy">Leicht<small>später</small></button>`;
+    return;
+  }
   state.revealed = true;
   const area = $("#revealArea");
-  if (area) area.innerHTML = `<div class="study-answer">${escapeHtml(word.german)}${word.note ? `<small><br>${escapeHtml(word.note)}</small>` : ""}</div>`;
+  if (area) area.innerHTML = `<div class="study-answer">${escapeHtml(word.italian)}${word.note ? `<small><br>${escapeHtml(word.note)}</small>` : ""}</div>`;
   if (message && $("#feedback")) $("#feedback").innerHTML = message;
   els.studyActions.className = "study-actions four";
   els.studyActions.innerHTML = `
@@ -630,6 +693,7 @@ document.addEventListener("click", (event) => {
   const word = state.session[state.index];
   if (!word) return;
   if (target.hasAttribute("data-study-speak")) speak(word.italian);
+  if (target.id === "flashcard") reveal(word);
   if (target.id === "revealButton") reveal(word);
   if (target.id === "checkAnswer") checkTyped($("#answerInput").value, word);
   if (target.id === "recordButton") startRecognition(word);
@@ -647,6 +711,21 @@ els.trainingGroup.addEventListener("change", () => {
   state.selectedGroup = els.trainingGroup.value;
   const count = state.selectedGroup ? state.words.filter((word) => word.group === state.selectedGroup).length : state.words.length;
   toast(state.selectedGroup ? `${count} Vokabeln aus „${state.selectedGroup}“ ausgewählt.` : "Alle Gruppen sind ausgewählt.");
+});
+
+els.wordSearch.addEventListener("input", () => {
+  state.libraryQuery = els.wordSearch.value;
+  renderWordList();
+});
+
+els.wordSort.addEventListener("change", () => {
+  state.librarySort = els.wordSort.value;
+  renderWordList();
+});
+
+els.swapWordDirection.addEventListener("click", () => {
+  state.libraryDirection = state.libraryDirection === "it-de" ? "de-it" : "it-de";
+  renderWordList();
 });
 
 $("#exportData").addEventListener("click", exportData);

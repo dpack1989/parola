@@ -4,7 +4,7 @@
       "blu", "scontrino", "grande", "camicia", "dove sono", "stivale", "specchio", "verde", "bello", "molto", "zaino", "cappotto", "brutto", "vestiti", "entrata", "nuovo", "uscita", "sta piovendo", "ombrello", "centro commerciale", "impermeabile", "giallo", "caro", "giacca", "economico", "bianco", "maglione", "dov'è", "scusi", "cassa", "camerino", "scarpa", "gonna", "nero", "maglietta", "rosso", "carino", "cappello", "vestito"
     ],
     "Essen & Getränke": [
-      "biscotto", "torta", "conto", "dolce", "carne", "freddo", "pizza", "bibita", "pollo", "panino", "fagiolo", "buono", "vorrei", "patata", "polpetta", "ecco"
+      "biscotto", "torta", "conto", "dolce", "carne", "freddo", "pizza", "bibita", "pollo", "panino", "fagiolo", "buono", "vorrei", "patata", "polpetta", "ecco", "pasta", "birra", "caldo", "cibo"
     ],
     "Stadt & Orientierung": [
       "città", "centro", "piccolo", "ma", "guarda", "casa", "moderno", "palazzo", "solo", "male", "vicino", "mi dispiace", "non", "lontano", "moschea", "posta", "aiuto", "chiesa", "stazione", "prego", "va bene", "panificio", "gelateria", "hotel", "ristorante", "piazza", "farmacia", "negozio", "museo", "lì", "biblioteca", "banca", "scuola", "qui", "teatro", "parco"
@@ -21,17 +21,44 @@
     "Familie": [
       "ragazzo", "ragazza", "sorella", "figlia", "figlio", "fratello", "è di"
     ],
+    "Freunde & Bekannte": [
+      "amica", "amico", "compagna di classe", "compagno di classe", "vicina"
+    ],
+    "Zuhause & Alltag": [
+      "appartamento", "bagno", "cane"
+    ],
+    "Feste & Geschenke": [
+      "buon compleanno", "regalo"
+    ],
     "Begrüßung & Abschied": [
-      "no", "sì", "vero", "buonasera", "bene", "a presto", "piacere", "come va", "io sono", "buongiorno", "perfetto", "arrivederci"
+      "no", "sì", "vero", "buonasera", "bene", "a presto", "piacere", "come va", "io sono", "buongiorno", "perfetto", "arrivederci", "ciao"
     ],
     "Café & Bestellen": [
       "gelato", "grazie", "cornetto", "cappuccino", "per favore", "caffè", "tè", "salve"
     ],
     "Grammatik & Grundlagen": [
-      "lo", "l'", "le", "i", "sono", "la", "il", "ci sono", "anche", "in", "con", "c'è", "lei", "lui", "è", "e tu", "una", "ho", "ah", "tu", "io", "e", "o", "un"
+      "lo", "l'", "le", "i", "sono", "la", "il", "ci sono", "anche", "in", "con", "c'è", "lei", "lui", "è", "e tu", "una", "ho", "ah", "tu", "io", "e", "o", "un", "mia", "mio", "per"
     ]
   },
   "translations": {
+    "amica": "Freundin",
+    "amico": "Freund, Kumpel",
+    "compagna di classe": "Klassenkameradin",
+    "compagno di classe": "Klassenkamerad",
+    "vicina": "Nachbarin",
+    "pasta": "Pasta, Nudeln",
+    "mia": "meine",
+    "birra": "Bier",
+    "caldo": "warm, heiß",
+    "mio": "mein",
+    "cane": "Hund",
+    "appartamento": "Wohnung, Appartement",
+    "bagno": "Badezimmer, Toilette",
+    "cibo": "Essen",
+    "buon compleanno": "Alles Gute zum Geburtstag",
+    "per": "für, um, zu",
+    "ciao": "Hallo, Tschüss",
+    "regalo": "Geschenk",
     "scontrino": "Kassenzettel, Beleg",
     "grande": "groß",
     "camicia": "Hemd, Bluse",

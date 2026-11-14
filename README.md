@@ -11,7 +11,7 @@ Enthalten sind:
 - eigene Vokabeln hinzufügen, bearbeiten und löschen
 - Vokabeln in frei benennbare Gruppen einteilen und gruppenweise trainieren
 - italienische Sprachausgabe über die Systemstimme
-- Lernkarten mit selbstständiger Bewertung
+- Lernkarten Deutsch → Italienisch mit antippbarer Kartenwendung und automatischer Aussprache
 - Schreibübungen Deutsch → Italienisch
 - Sprechübungen mit Browser-Spracherkennung
 - automatischer Ablauf beim Sprechen: erkennen, Lösung zeigen, vorsprechen und weiterschalten
@@ -24,6 +24,7 @@ Enthalten sind:
 - Web-App-Manifest, App-Symbol und Offline-Cache
 - responsive Bedienoberfläche für das iPhone
 - eingebauter Vokabelkatalog aus dem Ordner `INBOUND`
+- durchsuchbare, sortierbare zweisprachige Vokabelliste mit umkehrbarer Sprachrichtung
 - natives iOS-Projekt mit App-Symbol, Startbildschirm und iPhone-Berechtigungen
 - native Spracherkennung in der iPhone-App mit italienischer Sprache (`it-IT`)
 - native Sicherung über das iOS-Teilen-Menü
