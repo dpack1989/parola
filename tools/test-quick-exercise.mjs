@@ -209,5 +209,72 @@ if (!grammarArticles.correctMarked || !grammarArticles.feedback.includes("Richti
   throw new Error("Die Artikelübung oder die mobile Grammatikdarstellung funktioniert nicht korrekt.");
 }
 
-console.log(JSON.stringify({ viewport, firstGerman, firstReveal, repeatedGerman, result, reverseDirection, groupFilter, reverseWrite, reverseSpeak, grammarGender, grammarArticles }, null, 2));
+const cloudDialog = await evaluate(`(() => {
+  document.querySelector('#openSettings').click();
+  const dialog = document.querySelector('#backupDialog');
+  const panel = document.querySelector('.cloud-panel');
+  const result = {
+    open: dialog.open,
+    emailVisible: !document.querySelector('#cloudSignedOut').hidden,
+    status: document.querySelector('#cloudStatus').textContent,
+    fitsViewport: panel.getBoundingClientRect().width <= innerWidth - 24
+  };
+  document.querySelector('#closeBackup').click();
+  return result;
+})()`);
+if (!cloudDialog.open || !cloudDialog.emailVisible || !cloudDialog.fitsViewport) {
+  throw new Error("Die Cloud-Anmeldung ist auf dem iPhone nicht korrekt bedienbar.");
+}
+
+const cloudSync = await evaluate(`(async () => {
+  const remoteWord = normalizeWordData({
+    id: 'cloud-test-word',
+    italian: 'la nuvola',
+    german: 'die Wolke',
+    group: 'Cloud-Test',
+    createdAt: '2026-11-15T08:00:00.000Z',
+    updatedAt: '2026-11-15T08:00:00.000Z'
+  });
+  window.__cloudPushes = [];
+  window.ParolaCloud = {
+    available: true,
+    pullState: async () => ({
+      payload: {
+        version: 1,
+        catalogVersion: state.catalogVersion,
+        exportedAt: '2026-11-15T08:00:00.000Z',
+        words: [remoteWord],
+        deletedWords: {}
+      }
+    }),
+    pushState: async (userId, payload) => {
+      window.__cloudPushes.push({ userId, payload });
+      return { updated_at: new Date().toISOString() };
+    }
+  };
+  state.cloud.session = { user: { id: 'cloud-test-user', email: 'test@example.com' } };
+  state.cloud.ready = false;
+  state.cloud.syncing = false;
+  await syncFromCloud();
+  const pulled = state.words.some((word) => word.id === remoteWord.id);
+  const firstPushCount = window.__cloudPushes.length;
+  const localWord = state.words.find((word) => word.id === remoteWord.id);
+  localWord.note = 'am iPhone ergänzt';
+  localWord.updatedAt = new Date().toISOString();
+  persist();
+  await new Promise((resolve) => setTimeout(resolve, 900));
+  return {
+    pulled,
+    firstPushCount,
+    totalPushes: window.__cloudPushes.length,
+    pushedNote: window.__cloudPushes.at(-1)?.payload?.words?.find((word) => word.id === remoteWord.id)?.note,
+    status: document.querySelector('#cloudStatus')?.textContent,
+    account: document.querySelector('#cloudAccount')?.textContent
+  };
+})()`);
+if (!cloudSync.pulled || cloudSync.firstPushCount !== 1 || cloudSync.totalPushes < 2 || cloudSync.pushedNote !== "am iPhone ergänzt" || cloudSync.status !== "Verbunden") {
+  throw new Error("Die lokale Cloud-Synchronisierung funktioniert nicht korrekt.");
+}
+
+console.log(JSON.stringify({ viewport, firstGerman, firstReveal, repeatedGerman, result, reverseDirection, groupFilter, reverseWrite, reverseSpeak, grammarGender, grammarArticles, cloudDialog, cloudSync }, null, 2));
 socket.close();

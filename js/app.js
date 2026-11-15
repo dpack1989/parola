@@ -26,8 +26,19 @@ const state = {
   speechRestartTimer: null,
   speechPlaybackTimer: null,
   speechPlaybackStarted: false,
-  autoAdvanceTimer: null
+  autoAdvanceTimer: null,
+  deletedWords: {},
+  localUpdatedAt: "",
+  cloud: {
+    session: null,
+    ready: false,
+    syncing: false,
+    phase: "signed-out",
+    lastSyncedAt: ""
+  }
 };
+
+let cloudSyncTimer = null;
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -71,7 +82,11 @@ const els = {
   swapTrainingDirection: $("#swapTrainingDirection"), trainingDirectionLabel: $("#trainingDirectionLabel"), writeModeHint: $("#writeModeHint"),
   studyDialog: $("#studyDialog"), studyContent: $("#studyContent"), studyActions: $("#studyActions"),
   studyProgress: $("#studyProgress"), studyPosition: $("#studyPosition"),
-  backupDialog: $("#backupDialog"), toast: $("#toast")
+  backupDialog: $("#backupDialog"), toast: $("#toast"),
+  cloudStatus: $("#cloudStatus"), cloudSignedOut: $("#cloudSignedOut"), cloudSignedIn: $("#cloudSignedIn"),
+  cloudEmail: $("#cloudEmail"), cloudPassword: $("#cloudPassword"), cloudAccount: $("#cloudAccount"),
+  cloudLastSync: $("#cloudLastSync"), cloudSignIn: $("#cloudSignIn"), cloudSignUp: $("#cloudSignUp"),
+  cloudSignOut: $("#cloudSignOut"), cloudSyncNow: $("#cloudSyncNow")
 };
 
 async function load() {
@@ -80,11 +95,15 @@ async function load() {
     parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
     state.words = Array.isArray(parsed?.words) ? parsed.words.map(normalizeWordData) : [];
     state.catalogVersion = parsed?.catalogVersion || "";
+    state.deletedWords = parsed?.deletedWords && typeof parsed.deletedWords === "object" ? parsed.deletedWords : {};
+    state.localUpdatedAt = parsed?.exportedAt || "";
   } catch {
     state.words = [];
+    state.deletedWords = {};
   }
   render();
   await syncCatalog(!state.catalogVersion);
+  await initCloud();
 }
 
 async function syncCatalog(replaceLegacy = false) {
@@ -100,6 +119,7 @@ async function syncCatalog(replaceLegacy = false) {
 
     for (const sourceWord of catalog.words) {
       if (!sourceWord.italian || !sourceWord.german) continue;
+      if (state.deletedWords[sourceWord.id]) continue;
       const existing = byId.get(sourceWord.id) || byItalian.get(normalize(sourceWord.italian));
       if (existing) {
         Object.assign(existing, {
@@ -140,17 +160,198 @@ function normalizeWordData(word) {
     group: typeof word.group === "string" ? word.group.trim() : "",
     mistakeCount: Number.isFinite(word.mistakeCount) ? word.mistakeCount : 0,
     correctCount: Number.isFinite(word.correctCount) ? word.correctCount : 0,
-    difficulty: Number.isFinite(word.difficulty) ? word.difficulty : 0
+    difficulty: Number.isFinite(word.difficulty) ? word.difficulty : 0,
+    updatedAt: word.updatedAt || word.lastReviewed || word.lastMistake || word.catalogUpdatedAt || word.createdAt || new Date(0).toISOString()
   };
 }
 
-function persist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words }));
+function persist({ sync = true, touch = true } = {}) {
+  if (touch || !state.localUpdatedAt) state.localUpdatedAt = new Date().toISOString();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    version: 1,
+    catalogVersion: state.catalogVersion,
+    exportedAt: state.localUpdatedAt,
+    words: state.words,
+    deletedWords: state.deletedWords
+  }));
+  if (sync) queueCloudSync();
 }
 
-function save() {
-  persist();
+function save(options) {
+  persist(options);
   render();
+}
+
+function wordTimestamp(word) {
+  const value = Date.parse(word?.updatedAt || word?.lastReviewed || word?.lastMistake || word?.catalogUpdatedAt || word?.createdAt || 0);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function latestIso(...values) {
+  return values.filter(Boolean).sort((a, b) => Date.parse(b) - Date.parse(a))[0] || new Date().toISOString();
+}
+
+function cloudSnapshot() {
+  return {
+    version: 1,
+    app: "Parola",
+    catalogVersion: state.catalogVersion,
+    exportedAt: state.localUpdatedAt || new Date().toISOString(),
+    words: state.words,
+    deletedWords: state.deletedWords
+  };
+}
+
+function mergeCloudSnapshot(remote = {}) {
+  const mergedDeleted = { ...state.deletedWords };
+  for (const [id, deletedAt] of Object.entries(remote.deletedWords || {})) {
+    if (!mergedDeleted[id] || Date.parse(deletedAt) > Date.parse(mergedDeleted[id])) mergedDeleted[id] = deletedAt;
+  }
+
+  const words = new Map(state.words.map((word) => [word.id, normalizeWordData(word)]));
+  for (const remoteWord of Array.isArray(remote.words) ? remote.words : []) {
+    const normalized = normalizeWordData(remoteWord);
+    const localWord = words.get(normalized.id);
+    if (!localWord || wordTimestamp(normalized) > wordTimestamp(localWord)) words.set(normalized.id, normalized);
+  }
+
+  state.words = [...words.values()].filter((word) => {
+    const deletedAt = mergedDeleted[word.id];
+    return !deletedAt || Date.parse(deletedAt) < wordTimestamp(word);
+  });
+  state.deletedWords = mergedDeleted;
+  state.catalogVersion = state.catalogVersion || remote.catalogVersion || "";
+  state.localUpdatedAt = latestIso(state.localUpdatedAt, remote.exportedAt);
+}
+
+function renderCloud() {
+  if (!els.cloudStatus) return;
+  const available = !!window.ParolaCloud?.available;
+  const session = state.cloud.session;
+  els.cloudSignedOut.hidden = !!session;
+  els.cloudSignedIn.hidden = !session;
+  els.cloudAccount.textContent = session?.user?.email || "";
+  els.cloudStatus.className = "cloud-status";
+
+  if (!available) {
+    els.cloudStatus.textContent = "Nicht verfügbar";
+  } else if (!session) {
+    els.cloudStatus.textContent = "Nicht angemeldet";
+  } else if (state.cloud.phase === "syncing") {
+    els.cloudStatus.textContent = "Synchronisiert …";
+    els.cloudStatus.classList.add("pending");
+  } else if (state.cloud.phase === "pending") {
+    els.cloudStatus.textContent = "Änderung wartet";
+    els.cloudStatus.classList.add("pending");
+  } else if (state.cloud.phase === "offline") {
+    els.cloudStatus.textContent = "Nur lokal";
+    els.cloudStatus.classList.add("pending");
+  } else if (state.cloud.phase === "error") {
+    els.cloudStatus.textContent = "Cloud-Fehler";
+  } else {
+    els.cloudStatus.textContent = "Verbunden";
+    els.cloudStatus.classList.add("connected");
+  }
+
+  els.cloudLastSync.textContent = state.cloud.lastSyncedAt
+    ? `Zuletzt synchronisiert: ${new Date(state.cloud.lastSyncedAt).toLocaleString("de-AT", { dateStyle: "short", timeStyle: "short" })}`
+    : "Noch nicht synchronisiert.";
+  [els.cloudSignIn, els.cloudSignUp, els.cloudSignOut, els.cloudSyncNow].forEach((button) => {
+    if (button) button.disabled = state.cloud.syncing;
+  });
+}
+
+function cloudErrorMessage(error) {
+  const message = String(error?.message || "");
+  if (/invalid login credentials/i.test(message)) return "E-Mail-Adresse oder Passwort stimmt nicht.";
+  if (/email not confirmed/i.test(message)) return "Bitte bestätige zuerst die E-Mail von Supabase.";
+  if (/already registered/i.test(message)) return "Für diese E-Mail gibt es bereits ein Konto. Bitte anmelden.";
+  if (/failed to fetch|network/i.test(message)) return "Keine Internetverbindung. Deine Änderungen bleiben lokal gespeichert.";
+  return "Die Cloud-Verbindung hat noch nicht geklappt.";
+}
+
+async function initCloud() {
+  if (!window.ParolaCloud?.available) {
+    renderCloud();
+    return;
+  }
+  window.ParolaCloud.onAuthStateChange((event, session) => {
+    setTimeout(() => handleCloudSession(session, event), 0);
+  });
+  try {
+    await handleCloudSession(await window.ParolaCloud.getSession(), "INITIAL_LOAD");
+  } catch (error) {
+    state.cloud.phase = "error";
+    renderCloud();
+    toast(cloudErrorMessage(error));
+  }
+}
+
+async function handleCloudSession(session, event = "") {
+  const previousUser = state.cloud.session?.user?.id;
+  state.cloud.session = session;
+  if (!session) {
+    state.cloud.ready = false;
+    state.cloud.phase = "signed-out";
+    state.cloud.lastSyncedAt = "";
+    renderCloud();
+    return;
+  }
+  renderCloud();
+  if (state.cloud.ready && previousUser === session.user.id && event !== "USER_UPDATED") return;
+  await syncFromCloud();
+}
+
+async function syncFromCloud({ announce = false } = {}) {
+  const session = state.cloud.session;
+  if (!session || state.cloud.syncing) return;
+  clearTimeout(cloudSyncTimer);
+  state.cloud.syncing = true;
+  state.cloud.phase = "syncing";
+  renderCloud();
+  try {
+    const remote = await window.ParolaCloud.pullState(session.user.id);
+    if (remote?.payload) mergeCloudSnapshot(remote.payload);
+    persist({ sync: false, touch: false });
+    render();
+    await window.ParolaCloud.pushState(session.user.id, cloudSnapshot());
+    state.cloud.ready = true;
+    state.cloud.phase = "synced";
+    state.cloud.lastSyncedAt = new Date().toISOString();
+    if (announce) toast("Cloud und Gerät sind synchronisiert.");
+  } catch (error) {
+    state.cloud.phase = navigator.onLine ? "error" : "offline";
+    if (announce) toast(cloudErrorMessage(error));
+  } finally {
+    state.cloud.syncing = false;
+    renderCloud();
+  }
+}
+
+async function pushCloudNow() {
+  const session = state.cloud.session;
+  if (!session || !state.cloud.ready || state.cloud.syncing) return;
+  state.cloud.syncing = true;
+  state.cloud.phase = "syncing";
+  renderCloud();
+  try {
+    await window.ParolaCloud.pushState(session.user.id, cloudSnapshot());
+    state.cloud.phase = "synced";
+    state.cloud.lastSyncedAt = new Date().toISOString();
+  } catch (error) {
+    state.cloud.phase = navigator.onLine ? "error" : "offline";
+  } finally {
+    state.cloud.syncing = false;
+    renderCloud();
+  }
+}
+
+function queueCloudSync() {
+  if (!state.cloud.session || !state.cloud.ready) return;
+  clearTimeout(cloudSyncTimer);
+  state.cloud.phase = "pending";
+  renderCloud();
+  cloudSyncTimer = setTimeout(pushCloudNow, 700);
 }
 
 function dueWords() {
@@ -171,6 +372,7 @@ function render() {
   renderGroups();
   renderTrainingDirection();
   renderWordList();
+  renderCloud();
 }
 
 function renderWordList() {
@@ -521,16 +723,20 @@ function showSpeechAnswer(word) {
 }
 
 function recordMistake(word) {
+  const now = new Date().toISOString();
   word.mistakeCount = (word.mistakeCount || 0) + 1;
   word.difficulty = Math.min(6, (word.difficulty || 0) + 1);
-  word.lastMistake = new Date().toISOString();
+  word.lastMistake = now;
+  word.updatedAt = now;
   persist();
 }
 
 function recordSuccess(word) {
+  const now = new Date().toISOString();
   word.correctCount = (word.correctCount || 0) + 1;
   word.difficulty = Math.max(0, (word.difficulty || 0) - .35);
-  word.lastReviewed = new Date().toISOString();
+  word.lastReviewed = now;
+  word.updatedAt = now;
 }
 
 function repeatSpokenAnswer(word) {
@@ -747,12 +953,14 @@ function startRecognition(word) {
 }
 
 function schedule(word, rating) {
+  const now = new Date().toISOString();
   const intervals = { again: 0, hard: 1, good: Math.max(3, Math.round((word.interval || 1) * 2.2)), easy: Math.max(7, Math.round((word.interval || 2) * 3.2)) };
   const nextInterval = intervals[rating];
   word.interval = nextInterval;
   word.repetitions = rating === "again" ? 0 : (word.repetitions || 0) + 1;
   word.due = new Date(Date.now() + (rating === "again" ? 10 * 60000 : nextInterval * DAY)).toISOString();
-  word.lastReviewed = new Date().toISOString();
+  word.lastReviewed = now;
+  word.updatedAt = now;
   if (rating === "again") recordMistake(word);
   else if (rating === "hard") word.difficulty = Math.min(6, (word.difficulty || 0) + .5);
   else recordSuccess(word);
@@ -782,7 +990,7 @@ function toast(message) {
 }
 
 async function exportData() {
-  const payload = JSON.stringify({ version: 1, app: "Parola", catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words }, null, 2);
+  const payload = JSON.stringify({ version: 1, app: "Parola", catalogVersion: state.catalogVersion, exportedAt: new Date().toISOString(), words: state.words, deletedWords: state.deletedWords }, null, 2);
   const filename = `parola-sicherung-${new Date().toISOString().slice(0, 10)}.json`;
   const filesystem = nativePlugin("Filesystem");
   const share = nativePlugin("Share");
@@ -810,6 +1018,7 @@ async function importData(file) {
     if (!Array.isArray(parsed.words) || parsed.words.some((word) => !word.italian || !word.german)) throw new Error();
     if (state.words.length) await exportData();
     state.words = parsed.words.map(normalizeWordData);
+    state.deletedWords = parsed.deletedWords && typeof parsed.deletedWords === "object" ? parsed.deletedWords : {};
     state.catalogVersion = parsed.catalogVersion || state.catalogVersion;
     persist();
     await syncCatalog(false);
@@ -827,8 +1036,9 @@ els.wordForm.addEventListener("submit", (event) => {
   const group = els.group.value.trim();
   if (!italian || !german) return;
   const existing = state.words.find((word) => word.id === els.editId.value);
-  if (existing) Object.assign(existing, { italian, german, group, note: els.note.value.trim() });
-  else state.words.unshift(normalizeWordData({ id: uid(), italian, german, group, note: els.note.value.trim(), due: new Date().toISOString(), interval: 0, repetitions: 0, createdAt: new Date().toISOString() }));
+  const now = new Date().toISOString();
+  if (existing) Object.assign(existing, { italian, german, group, note: els.note.value.trim(), updatedAt: now });
+  else state.words.unshift(normalizeWordData({ id: uid(), italian, german, group, note: els.note.value.trim(), due: now, interval: 0, repetitions: 0, createdAt: now, updatedAt: now }));
   save();
   els.wordDialog.close();
   toast(existing ? "Vokabel aktualisiert." : "Vokabel hinzugefügt.");
@@ -842,6 +1052,7 @@ document.addEventListener("click", (event) => {
   if (target.id === "deleteWord") {
     const word = state.words.find((item) => item.id === els.editId.value);
     if (word && confirm(`„${word.italian}“ wirklich löschen?`)) {
+      state.deletedWords[word.id] = new Date().toISOString();
       state.words = state.words.filter((item) => item.id !== word.id);
       save();
       els.wordDialog.close();
@@ -931,6 +1142,54 @@ els.swapWordDirection.addEventListener("click", () => {
 
 $("#exportData").addEventListener("click", exportData);
 $("#importData").addEventListener("change", (event) => event.target.files[0] && importData(event.target.files[0]));
+
+async function cloudCredentials(action) {
+  const email = els.cloudEmail.value.trim();
+  const password = els.cloudPassword.value;
+  if (!email || password.length < 8) {
+    toast("Bitte E-Mail-Adresse und ein Passwort mit mindestens 8 Zeichen eingeben.");
+    return;
+  }
+  state.cloud.phase = "syncing";
+  renderCloud();
+  try {
+    const data = await action(email, password);
+    els.cloudPassword.value = "";
+    if (data.session) {
+      await handleCloudSession(data.session, "SIGNED_IN");
+      toast("Angemeldet – deine Wörter werden synchronisiert.");
+    } else {
+      toast("Bitte öffne jetzt die Bestätigungs-E-Mail von Supabase.");
+    }
+  } catch (error) {
+    state.cloud.phase = "error";
+    toast(cloudErrorMessage(error));
+  } finally {
+    renderCloud();
+  }
+}
+
+els.cloudSignIn.addEventListener("click", () => cloudCredentials((email, password) => window.ParolaCloud.signIn(email, password)));
+els.cloudSignUp.addEventListener("click", () => cloudCredentials((email, password) => window.ParolaCloud.signUp(email, password)));
+els.cloudSyncNow.addEventListener("click", () => syncFromCloud({ announce: true }));
+els.cloudSignOut.addEventListener("click", async () => {
+  state.cloud.syncing = true;
+  renderCloud();
+  try {
+    await window.ParolaCloud.signOut();
+    await handleCloudSession(null, "SIGNED_OUT");
+    toast("Cloud abgemeldet. Die lokalen Wörter bleiben erhalten.");
+  } catch (error) {
+    toast(cloudErrorMessage(error));
+  } finally {
+    state.cloud.syncing = false;
+    renderCloud();
+  }
+});
+
+window.addEventListener("online", () => {
+  if (state.cloud.session) syncFromCloud();
+});
 
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   navigator.serviceWorker.register("./sw.js").catch(() => {});

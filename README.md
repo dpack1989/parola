@@ -5,6 +5,7 @@
 - **Web-App öffnen:** [dpack1989.github.io/parola](https://dpack1989.github.io/parola/)
 - **Projekt auf GitHub:** [github.com/dpack1989/parola](https://github.com/dpack1989/parola)
 - **Dokumentation:** [GitHub und GitHub Pages](docs/GITHUB-UND-PAGES.md) · [Parola im Überblick](docs/PAROLA.md)
+- **Cloud:** [Synchronisierung zwischen mehreren Geräten](docs/CLOUD-SYNCHRONISIERUNG.md)
 
 ## Aktueller Stand
 
@@ -29,6 +30,7 @@ Enthalten sind:
 - lokale Wiederholungsplanung mit vier Bewertungen
 - lokale Speicherung im Browser
 - Export und Import einer JSON-Datensicherung
+- optionale Cloud-Synchronisierung über Supabase mit persönlicher Anmeldung
 - Web-App-Manifest, App-Symbol und Offline-Cache
 - responsive Bedienoberfläche für das iPhone
 - eingebauter Vokabelkatalog aus dem Ordner `INBOUND`
@@ -83,7 +85,7 @@ Danach im Browser `http://127.0.0.1:8765` öffnen.
 
 ## Speicherung und Sicherung
 
-Die Vokabeln liegen im `localStorage` des jeweiligen Browsers beziehungsweise der iPhone-App unter dem Schlüssel `parola-v1`. Web-App und native App besitzen getrennte Speicherbereiche und werden nicht automatisch synchronisiert. Deshalb regelmäßig im Bereich **Sicherung** eine JSON-Datei sichern. In der iPhone-App öffnet sich dafür das iOS-Teilen-Menü.
+Die Vokabeln liegen weiterhin im `localStorage` des jeweiligen Browsers beziehungsweise der iPhone-App unter dem Schlüssel `parola-v1`. Ohne Anmeldung besitzen Web-App und native App getrennte Speicherbereiche. Im Bereich **Sicherung** kann optional die Cloud-Synchronisierung aktiviert werden; danach gleicht Parola Wörter und Lernfortschritt über Supabase zwischen angemeldeten Geräten ab. Der Export einer JSON-Datei bleibt als zusätzliche Sicherung erhalten. In der iPhone-App öffnet sich dafür das iOS-Teilen-Menü.
 
 Beim Import einer Sicherung wird die vorhandene Sammlung ersetzt. Wenn bereits Wörter vorhanden sind, lädt Parola vorher automatisch eine Sicherung herunter.
 

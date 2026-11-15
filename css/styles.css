@@ -167,6 +167,17 @@ input { width: 100%; height: 52px; margin-top: 7px; padding: 0 14px; border: 1px
 .file-button { display: grid; place-items: center; margin: 12px 0; border: 1px solid var(--line); background: transparent; }
 .file-button input { display: none; }
 .small-note { font-size: .75rem; }
+.cloud-panel { margin: 22px 0; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper); }
+.cloud-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.cloud-heading h3 { margin: 0; font-family: Georgia, serif; }
+.cloud-status { flex: 0 0 auto; padding: 5px 9px; border-radius: 999px; background: rgba(33,48,43,.1); color: var(--muted); font-size: .65rem; font-weight: 800; }
+.cloud-status.connected { background: var(--green-soft); color: var(--green); }
+.cloud-status.pending { background: #f7dda0; color: #745815; }
+.cloud-panel label { margin: 14px 0; }
+.cloud-actions { display: grid; gap: 9px; }
+.secondary-button.full { width: 100%; }
+.cloud-account { margin: 18px 0 4px; overflow-wrap: anywhere; }
+.backup-heading { margin-top: 24px; font-family: Georgia, serif; }
 
 .study-dialog { width: min(100%, 720px); height: 100dvh; max-height: none; border-radius: 0; background: var(--paper); }
 .study-card { display: flex; flex-direction: column; min-height: 100%; padding: calc(18px + env(safe-area-inset-top)) 20px calc(20px + env(safe-area-inset-bottom)); }

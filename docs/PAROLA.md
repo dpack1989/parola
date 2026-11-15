@@ -10,9 +10,9 @@ Parola verwaltet eigene Vokabeln und ordnet sie in frei benennbare Gruppen ein. 
 
 ## Wo bleiben die persönlichen Daten?
 
-Persönliche Vokabeln, Lernfortschritt und Fehlerstatistik bleiben grundsätzlich lokal auf dem jeweiligen Gerät. Im Browser werden sie unter dem internen Schlüssel `parola-v1` gespeichert. Sie werden nicht automatisch zu GitHub oder auf ein anderes Gerät übertragen.
+Persönliche Vokabeln, Lernfortschritt und Fehlerstatistik bleiben grundsätzlich lokal auf dem jeweiligen Gerät. Im Browser werden sie unter dem internen Schlüssel `parola-v1` gespeichert. Sie werden niemals zu GitHub übertragen.
 
-Deshalb ist eine regelmäßige Sicherung wichtig. Im Bereich **Sicherung** kann eine JSON-Datei exportiert und später wieder importiert werden. Browser, iPhone-App, Android-App und Windows-Version haben jeweils eigene Speicherbereiche.
+Im Bereich **Sicherung** kann zusätzlich die freiwillige Cloud-Synchronisierung aktiviert werden. Nach einer persönlichen Anmeldung gleicht Parola den Stand über Supabase zwischen mehreren Geräten ab. Ohne Anmeldung bleiben Browser, iPhone-App, Android-App und Windows-Version getrennt. Eine JSON-Datei kann weiterhin exportiert und später wieder importiert werden.
 
 ## Wie wird Parola verwendet?
 

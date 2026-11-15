@@ -251,7 +251,42 @@
       <button class="dialog-close" id="closeBackup" aria-label="Schließen">×</button>
       <p class="section-kicker">Deine Daten</p>
       <h2>Sichern & wiederherstellen</h2>
-      <p>Alle Wörter bleiben nur in diesem Browser. Lade regelmäßig eine Sicherungsdatei herunter.</p>
+      <p>Deine Wörter bleiben auf diesem Gerät gespeichert. Mit der kostenlosen Cloud-Synchronisierung kannst du denselben Stand zusätzlich auf iPhone und Computer verwenden.</p>
+
+      <section class="cloud-panel" aria-labelledby="cloudTitle">
+        <div class="cloud-heading">
+          <div>
+            <p class="section-kicker">Geräte verbinden</p>
+            <h3 id="cloudTitle">Cloud-Synchronisierung</h3>
+          </div>
+          <span class="cloud-status" id="cloudStatus">Nicht angemeldet</span>
+        </div>
+
+        <div id="cloudSignedOut">
+          <label>E-Mail-Adresse
+            <input type="email" id="cloudEmail" autocomplete="username" inputmode="email" placeholder="name@beispiel.at">
+          </label>
+          <label>Passwort
+            <input type="password" id="cloudPassword" autocomplete="current-password" minlength="8" placeholder="Mindestens 8 Zeichen">
+          </label>
+          <div class="cloud-actions">
+            <button class="primary-button full" id="cloudSignIn" type="button">Anmelden & synchronisieren</button>
+            <button class="secondary-button full" id="cloudSignUp" type="button">Kostenloses Konto anlegen</button>
+          </div>
+          <p class="small-note">Beim ersten Anlegen erhältst du eine Bestätigungs-E-Mail. Danach kannst du dich auf allen Geräten mit denselben Daten anmelden.</p>
+        </div>
+
+        <div id="cloudSignedIn" hidden>
+          <p class="cloud-account">Angemeldet als <strong id="cloudAccount"></strong></p>
+          <p class="small-note" id="cloudLastSync">Noch nicht synchronisiert.</p>
+          <div class="cloud-actions">
+            <button class="primary-button full" id="cloudSyncNow" type="button">Jetzt synchronisieren</button>
+            <button class="secondary-button full" id="cloudSignOut" type="button">Abmelden</button>
+          </div>
+        </div>
+      </section>
+
+      <h3 class="backup-heading">Sicherungsdatei</h3>
       <button class="primary-button full" id="exportData">Sicherung herunterladen</button>
       <label class="file-button">Sicherung einlesen
         <input type="file" id="importData" accept="application/json,.json">
@@ -261,6 +296,8 @@
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/vendor/supabase.js" defer></script>
+  <script src="js/cloud.js" defer></script>
   <script src="js/app.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-const CACHE = "parola-v11";
-const ASSETS = ["./", "./index.html", "./css/styles.css", "./js/app.js", "./manifest.webmanifest", "./assets/icon.svg", "./data/vocabulary.json"];
+const CACHE = "parola-v12";
+const ASSETS = ["./", "./index.html", "./css/styles.css", "./js/vendor/supabase.js", "./js/cloud.js", "./js/app.js", "./manifest.webmanifest", "./assets/icon.svg", "./data/vocabulary.json"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
