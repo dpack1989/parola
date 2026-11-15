@@ -45,6 +45,10 @@
             <option value="">Alle Gruppen</option>
           </select>
         </label>
+        <button class="direction-button training-direction" id="swapTrainingDirection" type="button" aria-pressed="false">
+          <span id="trainingDirectionLabel">Deutsch → Italienisch</span>
+          <strong aria-hidden="true">⇄</strong>
+        </button>
         <div class="mode-grid">
           <button class="mode-card quick" data-mode="quick">
             <span class="mode-icon">⚡</span>
@@ -59,7 +63,7 @@
           <button class="mode-card blue" data-mode="write">
             <span class="mode-icon">✎</span>
             <strong>Schreiben</strong>
-            <small>Italienisch eintippen</small>
+            <small id="writeModeHint">Italienisch eintippen</small>
           </button>
           <button class="mode-card green" data-mode="speak">
             <span class="mode-icon">⌁</span>
@@ -67,6 +71,88 @@
             <small>Mit dem Mikrofon üben</small>
           </button>
         </div>
+      </section>
+
+      <section class="grammar-section" id="grammarSection" aria-labelledby="grammarTitle">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Regeln verstehen</p>
+            <h2 id="grammarTitle">Grammatik</h2>
+          </div>
+        </div>
+        <p class="grammar-intro">Lerne eine Regel in kleinen Schritten, sieh dir Beispiele an und prüfe dein Wissen anschließend mit wechselnden Aufgaben.</p>
+
+        <details class="grammar-topic" open>
+          <summary>
+            <span class="grammar-number">01</span>
+            <span><strong>Männlich oder weiblich?</strong><small>Das Geschlecht italienischer Nomen erkennen</small></span>
+          </summary>
+          <div class="grammar-content">
+            <div class="theory-block">
+              <p>Jedes italienische Nomen ist <strong>männlich (maschile)</strong> oder <strong>weiblich (femminile)</strong>. Die Endung gibt oft einen guten Hinweis – aber es gibt Ausnahmen.</p>
+              <div class="rule-grid">
+                <article><strong>-o</strong><span>meist männlich</span><em>il ragazzo · der Junge</em></article>
+                <article><strong>-a</strong><span>meist weiblich</span><em>la casa · das Haus</em></article>
+                <article><strong>-e</strong><span>männlich oder weiblich</span><em>il cane · la notte</em></article>
+              </div>
+            </div>
+            <div class="grammar-note"><strong>Weitere Hinweise:</strong> Wörter auf <em>-zione</em>, <em>-sione</em>, <em>-tà</em> und <em>-tù</em> sind häufig weiblich. Einige Wörter auf <em>-ma</em> sind dagegen männlich, zum Beispiel <strong>il problema</strong>.</div>
+            <div class="example-list" aria-label="Beispiele zum Geschlecht">
+              <div><span>il libro</span><small>das Buch · männlich</small></div>
+              <div><span>la stazione</span><small>der Bahnhof · weiblich</small></div>
+              <div><span>il ristorante</span><small>das Restaurant · männlich</small></div>
+              <div><span>la chiave</span><small>der Schlüssel · weiblich</small></div>
+            </div>
+            <section class="grammar-practice" aria-labelledby="genderPracticeTitle">
+              <p class="section-kicker">Jetzt ausprobieren</p>
+              <h3 id="genderPracticeTitle">Welches Geschlecht hat das Wort?</h3>
+              <div id="genderExercise" class="grammar-exercise"><button class="secondary-button" data-grammar-start="gender">Übung starten</button></div>
+            </section>
+          </div>
+        </details>
+
+        <details class="grammar-topic">
+          <summary>
+            <span class="grammar-number">02</span>
+            <span><strong>Die bestimmten Artikel</strong><small>il, lo, la, l’, i, gli und le</small></span>
+          </summary>
+          <div class="grammar-content">
+            <div class="theory-block">
+              <p>Die bestimmten Artikel entsprechen ungefähr dem deutschen „der, die, das“. Welcher Artikel passt, hängt von <strong>Geschlecht</strong>, <strong>Anzahl</strong> und dem <strong>Anfang des Nomens</strong> ab.</p>
+            </div>
+
+            <h3>Einzahl · Singolare</h3>
+            <div class="grammar-table-wrap">
+              <table class="grammar-table">
+                <thead><tr><th>Artikel</th><th>Wann?</th><th>Beispiel</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>il</strong></td><td>männlich, vor den meisten Konsonanten</td><td>il ragazzo <small>der Junge</small></td></tr>
+                  <tr><td><strong>lo</strong></td><td>männlich, vor s + Konsonant, z, ps, gn und ähnlichen Lauten</td><td>lo studente <small>der Schüler</small></td></tr>
+                  <tr><td><strong>la</strong></td><td>weiblich, vor Konsonanten</td><td>la ragazza <small>das Mädchen</small></td></tr>
+                  <tr><td><strong>l’</strong></td><td>männlich oder weiblich, vor Vokalen</td><td>l’amico · l’amica</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Mehrzahl · Plurale</h3>
+            <div class="grammar-table-wrap">
+              <table class="grammar-table">
+                <thead><tr><th>Artikel</th><th>Wann?</th><th>Beispiel</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>i</strong></td><td>Mehrzahl von <em>il</em></td><td>i ragazzi <small>die Jungen</small></td></tr>
+                  <tr><td><strong>gli</strong></td><td>Mehrzahl von <em>lo</em> und männlichem <em>l’</em></td><td>gli studenti <small>die Schüler</small></td></tr>
+                  <tr><td><strong>le</strong></td><td>Mehrzahl von <em>la</em> und weiblichem <em>l’</em></td><td>le ragazze <small>die Mädchen</small></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="grammar-note"><strong>Merke:</strong> <em>li</em> ist im heutigen Standarditalienisch kein bestimmter Artikel. Gemeint ist normalerweise <strong>i</strong> oder <strong>gli</strong>.</div>
+            <section class="grammar-practice" aria-labelledby="articlePracticeTitle">
+              <p class="section-kicker">Jetzt ausprobieren</p>
+              <h3 id="articlePracticeTitle">Welcher Artikel passt?</h3>
+              <div id="articlesExercise" class="grammar-exercise"><button class="secondary-button" data-grammar-start="articles">Übung starten</button></div>
+            </section>
+          </div>
+        </details>
       </section>
 
       <section class="library-section" aria-labelledby="libraryTitle">
@@ -88,6 +174,11 @@
             <input type="search" id="wordSearch" autocomplete="off" placeholder="Italienisch, Deutsch oder Gruppe">
           </label>
           <div class="library-options">
+            <label for="wordGroupFilter">Gruppe
+              <select id="wordGroupFilter">
+                <option value="">Alle Gruppen</option>
+              </select>
+            </label>
             <label for="wordSort">Sortieren
               <select id="wordSort">
                 <option value="italian">Italienisch A–Z</option>
@@ -111,6 +202,7 @@
     <nav class="bottom-nav" aria-label="Hauptnavigation">
       <button class="nav-item active" data-view="home"><span>⌂</span>Heute</button>
       <button class="nav-item" data-view="words"><span>≡</span>Wörter</button>
+      <button class="nav-item" data-view="grammar"><span>◎</span>Grammatik</button>
       <button class="nav-item" data-view="backup"><span>⇅</span>Sicherung</button>
     </nav>
   </div>

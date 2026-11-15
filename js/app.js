@@ -12,7 +12,9 @@ const state = {
   revealed: false,
   recognition: null,
   selectedGroup: "",
+  trainingDirection: "de-it",
   libraryQuery: "",
+  libraryGroup: "",
   librarySort: "italian",
   libraryDirection: "it-de",
   quickTotal: 0,
@@ -30,15 +32,43 @@ const state = {
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
+const grammarExercises = {
+  gender: [
+    { prompt: "libro", translation: "Buch", answer: "männlich", spoken: "il libro", explanation: "Wörter auf -o sind meistens männlich: il libro." },
+    { prompt: "casa", translation: "Haus", answer: "weiblich", spoken: "la casa", explanation: "Wörter auf -a sind meistens weiblich: la casa." },
+    { prompt: "ristorante", translation: "Restaurant", answer: "männlich", spoken: "il ristorante", explanation: "Bei Wörtern auf -e muss man das Geschlecht mitlernen: il ristorante." },
+    { prompt: "notte", translation: "Nacht", answer: "weiblich", spoken: "la notte", explanation: "Auch weibliche Wörter können auf -e enden: la notte." },
+    { prompt: "problema", translation: "Problem", answer: "männlich", spoken: "il problema", explanation: "Il problema ist eine wichtige Ausnahme: Trotz -a ist das Wort männlich." },
+    { prompt: "stazione", translation: "Bahnhof", answer: "weiblich", spoken: "la stazione", explanation: "Wörter auf -zione sind sehr häufig weiblich: la stazione." },
+    { prompt: "cane", translation: "Hund", answer: "männlich", spoken: "il cane", explanation: "Die Endung -e verrät das Geschlecht nicht sicher: il cane." },
+    { prompt: "chiave", translation: "Schlüssel", answer: "weiblich", spoken: "la chiave", explanation: "Die Endung -e verrät das Geschlecht nicht sicher: la chiave." }
+  ],
+  articles: [
+    { prompt: "___ ragazzo", translation: "der Junge", answer: "il", choices: ["il", "lo", "la", "l’"], spoken: "il ragazzo", explanation: "Vor den meisten männlichen Wörtern mit Konsonant steht il." },
+    { prompt: "___ studente", translation: "der Schüler", answer: "lo", choices: ["il", "lo", "la", "l’"], spoken: "lo studente", explanation: "Vor s + Konsonant verwendet man bei männlichen Wörtern lo." },
+    { prompt: "___ zaino", translation: "der Rucksack", answer: "lo", choices: ["il", "lo", "la", "l’"], spoken: "lo zaino", explanation: "Vor z verwendet man bei männlichen Wörtern lo." },
+    { prompt: "___ ragazza", translation: "das Mädchen", answer: "la", choices: ["il", "lo", "la", "l’"], spoken: "la ragazza", explanation: "Vor einem weiblichen Wort mit Konsonant steht la." },
+    { prompt: "___ amico", translation: "der Freund", answer: "l’", choices: ["il", "lo", "la", "l’"], spoken: "l'amico", explanation: "Vor einem Vokal wird der Artikel im Singular zu l’." },
+    { prompt: "___ amica", translation: "die Freundin", answer: "l’", choices: ["il", "lo", "la", "l’"], spoken: "l'amica", explanation: "L’ steht vor Vokalen sowohl bei männlichen als auch weiblichen Wörtern." },
+    { prompt: "___ ragazzi", translation: "die Jungen", answer: "i", choices: ["i", "gli", "le"], spoken: "i ragazzi", explanation: "I ist die Mehrzahl von il." },
+    { prompt: "___ studenti", translation: "die Schüler", answer: "gli", choices: ["i", "gli", "le"], spoken: "gli studenti", explanation: "Gli ist die Mehrzahl von lo." },
+    { prompt: "___ amici", translation: "die Freunde", answer: "gli", choices: ["i", "gli", "le"], spoken: "gli amici", explanation: "Bei männlichen Wörtern mit Vokal wird l’ in der Mehrzahl zu gli." },
+    { prompt: "___ ragazze", translation: "die Mädchen", answer: "le", choices: ["i", "gli", "le"], spoken: "le ragazze", explanation: "Le ist die weibliche Mehrzahl von la und l’." }
+  ]
+};
+
+const grammarExerciseState = { gender: -1, articles: -1 };
+
 const els = {
   dueCount: $("#dueCount"), dueLabel: $("#dueLabel"), todayHint: $("#todayHint"), wordCount: $("#wordCount"),
   wordList: $("#wordList"), emptyState: $("#emptyState"), wordDialog: $("#wordDialog"),
-  libraryTools: $("#libraryTools"), wordSearch: $("#wordSearch"), wordSort: $("#wordSort"),
+  libraryTools: $("#libraryTools"), wordSearch: $("#wordSearch"), wordSort: $("#wordSort"), wordGroupFilter: $("#wordGroupFilter"),
   wordResults: $("#wordResults"), filteredEmpty: $("#filteredEmpty"),
   swapWordDirection: $("#swapWordDirection"), wordDirectionLabel: $("#wordDirectionLabel"),
   wordForm: $("#wordForm"), wordDialogTitle: $("#wordDialogTitle"), editId: $("#editId"),
   italian: $("#italianInput"), german: $("#germanInput"), group: $("#groupInput"), note: $("#noteInput"),
   trainingGroup: $("#trainingGroup"), groupSuggestions: $("#groupSuggestions"),
+  swapTrainingDirection: $("#swapTrainingDirection"), trainingDirectionLabel: $("#trainingDirectionLabel"), writeModeHint: $("#writeModeHint"),
   studyDialog: $("#studyDialog"), studyContent: $("#studyContent"), studyActions: $("#studyActions"),
   studyProgress: $("#studyProgress"), studyPosition: $("#studyPosition"),
   backupDialog: $("#backupDialog"), toast: $("#toast")
@@ -139,13 +169,18 @@ function render() {
   els.emptyState.hidden = state.words.length > 0;
   els.libraryTools.hidden = state.words.length === 0;
   renderGroups();
+  renderTrainingDirection();
   renderWordList();
 }
 
 function renderWordList() {
   const query = normalize(state.libraryQuery);
-  const visibleWords = state.words.filter((word) => !query || [word.italian, word.german, word.group, word.note]
-    .some((value) => normalize(value || "").includes(query)));
+  const visibleWords = state.words.filter((word) => {
+    const matchesGroup = !state.libraryGroup || word.group === state.libraryGroup;
+    const matchesQuery = !query || [word.italian, word.german, word.group, word.note]
+      .some((value) => normalize(value || "").includes(query));
+    return matchesGroup && matchesQuery;
+  });
   const compareText = (a, b, field, locale) => (a[field] || "").localeCompare(b[field] || "", locale, { sensitivity: "base" });
   visibleWords.sort((a, b) => {
     if (state.librarySort === "german") return compareText(a, b, "german", "de");
@@ -157,7 +192,7 @@ function renderWordList() {
   const germanFirst = state.libraryDirection === "de-it";
   els.wordDirectionLabel.textContent = germanFirst ? "Deutsch → Italienisch" : "Italienisch → Deutsch";
   els.swapWordDirection.setAttribute("aria-pressed", String(germanFirst));
-  els.wordResults.textContent = query ? `${visibleWords.length} von ${state.words.length} Vokabeln` : `${state.words.length} Vokabeln`;
+  els.wordResults.textContent = query || state.libraryGroup ? `${visibleWords.length} von ${state.words.length} Vokabeln` : `${state.words.length} Vokabeln`;
   els.filteredEmpty.hidden = visibleWords.length > 0 || state.words.length === 0;
   els.wordList.hidden = visibleWords.length === 0;
   els.wordList.innerHTML = visibleWords
@@ -186,9 +221,20 @@ function groups() {
 function renderGroups() {
   const items = groups();
   if (state.selectedGroup && !items.includes(state.selectedGroup)) state.selectedGroup = "";
-  els.trainingGroup.innerHTML = `<option value="">Alle Gruppen</option>${items.map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`).join("")}`;
+  if (state.libraryGroup && !items.includes(state.libraryGroup)) state.libraryGroup = "";
+  const options = `<option value="">Alle Gruppen</option>${items.map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`).join("")}`;
+  els.trainingGroup.innerHTML = options;
   els.trainingGroup.value = state.selectedGroup;
+  els.wordGroupFilter.innerHTML = options;
+  els.wordGroupFilter.value = state.libraryGroup;
   els.groupSuggestions.innerHTML = items.map((group) => `<option value="${escapeHtml(group)}"></option>`).join("");
+}
+
+function renderTrainingDirection() {
+  const germanFirst = state.trainingDirection === "de-it";
+  els.trainingDirectionLabel.textContent = germanFirst ? "Deutsch → Italienisch" : "Italienisch → Deutsch";
+  els.swapTrainingDirection.setAttribute("aria-pressed", String(!germanFirst));
+  els.writeModeHint.textContent = germanFirst ? "Italienisch eintippen" : "Deutsch eintippen";
 }
 
 function escapeHtml(value = "") {
@@ -197,6 +243,78 @@ function escapeHtml(value = "") {
 
 function normalize(value = "") {
   return value.trim().toLocaleLowerCase("it-IT").replace(/[.!?,;:]/g, "").replace(/\s+/g, " ");
+}
+
+function germanFirst() {
+  return state.trainingDirection === "de-it";
+}
+
+function studyPrompt(word) {
+  return germanFirst() ? word.german : word.italian;
+}
+
+function studyAnswer(word) {
+  return germanFirst() ? word.italian : word.german;
+}
+
+function acceptedAnswers(word) {
+  const answer = studyAnswer(word);
+  const values = germanFirst() ? [answer] : [answer, ...answer.split(/[,;/]/)];
+  return values.map((value) => normalize(value)).filter(Boolean);
+}
+
+function isCorrectAnswer(value, word) {
+  return acceptedAnswers(word).includes(normalize(value));
+}
+
+function recognitionLanguage() {
+  return germanFirst() ? "it-IT" : "de-DE";
+}
+
+function announceItalianPrompt(word) {
+  if (!germanFirst()) setTimeout(() => {
+    if (els.studyDialog.open && state.session[state.index]?.id === word.id) speak(word.italian);
+  }, 180);
+}
+
+function renderGrammarExercise(topic) {
+  const exercises = grammarExercises[topic];
+  const container = $(`#${topic}Exercise`);
+  if (!exercises || !container) return;
+  let nextIndex = Math.floor(Math.random() * exercises.length);
+  if (exercises.length > 1 && nextIndex === grammarExerciseState[topic]) nextIndex = (nextIndex + 1) % exercises.length;
+  grammarExerciseState[topic] = nextIndex;
+  const exercise = exercises[nextIndex];
+  const choices = exercise.choices || ["männlich", "weiblich"];
+  container.innerHTML = `
+    <div class="grammar-question">
+      <small>${escapeHtml(exercise.translation)}</small>
+      <strong>${escapeHtml(exercise.prompt)}</strong>
+      <button class="grammar-listen" type="button" data-grammar-speak="${topic}" aria-label="Beispiel auf Italienisch anhören">🔊 Italienisch anhören</button>
+    </div>
+    <div class="grammar-choices">
+      ${choices.map((choice, index) => `<button class="grammar-choice" type="button" data-grammar-answer="${index}" data-grammar-topic="${topic}">${escapeHtml(choice)}</button>`).join("")}
+    </div>`;
+}
+
+function answerGrammarExercise(topic, choiceIndex) {
+  const exercises = grammarExercises[topic];
+  const exercise = exercises?.[grammarExerciseState[topic]];
+  const container = $(`#${topic}Exercise`);
+  if (!exercise || !container) return;
+  const choices = exercise.choices || ["männlich", "weiblich"];
+  const chosen = choices[choiceIndex];
+  const correct = chosen === exercise.answer;
+  container.querySelectorAll("[data-grammar-answer]").forEach((button) => {
+    const value = choices[Number(button.dataset.grammarAnswer)];
+    button.disabled = true;
+    if (value === exercise.answer) button.classList.add("correct");
+    else if (button.dataset.grammarAnswer === String(choiceIndex)) button.classList.add("wrong");
+  });
+  container.insertAdjacentHTML("beforeend", `
+    <p class="grammar-feedback"><strong>${correct ? "Richtig!" : `Richtig wäre „${escapeHtml(exercise.answer)}“.`}</strong> ${escapeHtml(exercise.explanation)}</p>
+    <button class="primary-button grammar-next" type="button" data-grammar-next="${topic}">Nächste Aufgabe</button>`);
+  if (correct) speak(exercise.spoken);
 }
 
 function uid() {
@@ -310,6 +428,7 @@ function renderStudy() {
   state.speechSolved = false;
   state.speechPlaybackStarted = false;
   const mode = currentMode();
+  if (mode !== "speak") state.speechAutoActive = false;
   const isQuick = state.mode === "quick";
   els.studyPosition.textContent = isQuick ? `${state.quickCorrect}/${state.quickTotal}` : `${state.index + 1}/${state.session.length}`;
   els.studyProgress.style.width = `${isQuick ? (state.quickCorrect / state.quickTotal) * 100 : (state.index / state.session.length) * 100}%`;
@@ -321,47 +440,53 @@ function renderStudy() {
 
 function renderCard(word) {
   const quick = state.mode === "quick";
+  const firstLanguage = germanFirst() ? "Deutsch" : "Italienisch";
+  const secondLanguage = germanFirst() ? "Italienisch" : "Deutsch";
   els.studyContent.innerHTML = `
     <div class="study-prompt">
       <p class="language">${quick ? "Schnelle Übung · erst überlegen, dann aufdecken" : "Tippe auf die Karte zum Umdrehen"}</p>
-      <button class="flashcard" id="flashcard" type="button" aria-label="Deutsches Wort aufdecken: ${escapeHtml(word.german)}">
+      <button class="flashcard" id="flashcard" type="button" aria-label="${firstLanguage} aufdecken: ${escapeHtml(studyPrompt(word))}">
         <span class="flashcard-inner">
           <span class="flashcard-face flashcard-front" data-card-front aria-hidden="false">
-            <small>Deutsch</small>
-            <strong>${escapeHtml(word.german)}</strong>
+            <small>${firstLanguage}</small>
+            <strong>${escapeHtml(studyPrompt(word))}</strong>
             <em>Antippen zum Aufdecken</em>
           </span>
           <span class="flashcard-face flashcard-back" data-card-back aria-hidden="true">
-            <small>Italienisch</small>
-            <strong>${escapeHtml(word.italian)}</strong>
-            ${word.note ? `<em>${escapeHtml(word.note)}</em>` : `<em>Noch einmal tippen, um es zu hören</em>`}
+            <small>${secondLanguage}</small>
+            <strong>${escapeHtml(studyAnswer(word))}</strong>
+            ${word.note ? `<em>${escapeHtml(word.note)}</em>` : `<em>Noch einmal tippen, um Italienisch zu hören</em>`}
           </span>
         </span>
       </button>
     </div>`;
   els.studyActions.className = "study-actions";
   els.studyActions.innerHTML = `<button class="primary-button full" id="revealButton">Karte umdrehen</button>`;
+  announceItalianPrompt(word);
 }
 
 function renderWrite(word) {
+  const answerLanguage = germanFirst() ? "Italienisch" : "Deutsch";
   els.studyContent.innerHTML = `
     <div class="study-prompt">
-      <p class="language">Schreibe auf Italienisch</p>
-      <div class="study-word">${escapeHtml(word.german)}</div>
+      <p class="language">Schreibe auf ${answerLanguage}</p>
+      <div class="study-word">${escapeHtml(studyPrompt(word))}</div>
       <input class="study-input" id="answerInput" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Deine Antwort">
       <p class="feedback" id="feedback"></p>
     </div>`;
   els.studyActions.className = "study-actions";
   els.studyActions.innerHTML = `<button class="primary-button full" id="checkAnswer">Prüfen</button>`;
+  announceItalianPrompt(word);
   setTimeout(() => $("#answerInput")?.focus(), 100);
 }
 
 function renderSpeak(word) {
   const supported = !!(nativePlugin("SpeechRecognition") || window.SpeechRecognition || window.webkitSpeechRecognition);
+  const answerLanguage = germanFirst() ? "Italienisch" : "Deutsch";
   els.studyContent.innerHTML = `
     <div class="study-prompt">
-      <p class="language">Sage es auf Italienisch</p>
-      <div class="study-word">${escapeHtml(word.german)}</div>
+      <p class="language">Sage es auf ${answerLanguage}</p>
+      <div class="study-word">${escapeHtml(studyPrompt(word))}</div>
       <button class="speak-button" id="recordButton" aria-label="Mikrofon starten">🎙</button>
       <p class="feedback" id="feedback">${supported ? "Tippe einmal auf das Mikrofon und sprich." : "Spracherkennung ist hier nicht verfügbar. Nutze das Mikrofon deiner iPhone-Tastatur."}</p>
       <div id="speechAnswer"></div>
@@ -372,15 +497,25 @@ function renderSpeak(word) {
     <button class="secondary-button" id="showSpeechAnswer">Antwort zeigen</button>
     <button class="primary-button full" id="checkSpeech">Eingabe prüfen</button>`;
   if (!supported) $("#recordButton").disabled = true;
-  if (supported && state.speechAutoActive) state.speechRestartTimer = setTimeout(() => startRecognition(word), 500);
+  if (!germanFirst() && supported && state.speechAutoActive) {
+    state.speechRestartTimer = setTimeout(() => speak(word.italian, () => {
+      if (els.studyDialog.open && state.session[state.index]?.id === word.id) {
+        state.speechRestartTimer = setTimeout(() => startRecognition(word), 300);
+      }
+    }), 180);
+  } else {
+    announceItalianPrompt(word);
+    if (supported && state.speechAutoActive) state.speechRestartTimer = setTimeout(() => startRecognition(word), 500);
+  }
 }
 
 function showSpeechAnswer(word) {
   state.revealed = true;
   const area = $("#speechAnswer");
-  if (area) area.innerHTML = `<div class="speech-answer"><small>Italienisch</small><strong>${escapeHtml(word.italian)}</strong>${word.note ? `<br><span>${escapeHtml(word.note)}</span>` : ""}</div>`;
+  const answerLanguage = germanFirst() ? "Italienisch" : "Deutsch";
+  if (area) area.innerHTML = `<div class="speech-answer"><small>${answerLanguage}</small><strong>${escapeHtml(studyAnswer(word))}</strong>${word.note ? `<br><span>${escapeHtml(word.note)}</span>` : ""}</div>`;
   const feedback = $("#feedback");
-  if (feedback && !state.speechSolved) feedback.textContent = "Sprich das italienische Wort jetzt noch richtig aus.";
+  if (feedback && !state.speechSolved) feedback.textContent = `Sprich die Antwort jetzt noch richtig auf ${answerLanguage}.`;
   const showButton = $("#showSpeechAnswer");
   if (showButton) showButton.disabled = true;
 }
@@ -439,7 +574,7 @@ function finishSpokenWord(word, heard = "") {
 
 function processSpokenAttempt(value, word) {
   if (!value.trim() || state.speechSolved) return;
-  if (normalize(value) === normalize(word.italian)) {
+  if (isCorrectAnswer(value, word)) {
     finishSpokenWord(word, value);
     return;
   }
@@ -462,10 +597,10 @@ function reveal(word, message = "") {
     }
     state.revealed = true;
     card?.classList.add("flipped");
-    card?.setAttribute("aria-label", `Italienisch: ${word.italian}. Noch einmal tippen zum Anhören.`);
+    card?.setAttribute("aria-label", `${germanFirst() ? "Italienisch" : "Deutsch"}: ${studyAnswer(word)}. Noch einmal tippen für die italienische Aussprache.`);
     $("[data-card-front]")?.setAttribute("aria-hidden", "true");
     $("[data-card-back]")?.setAttribute("aria-hidden", "false");
-    speak(word.italian);
+    if (germanFirst()) speak(word.italian);
     if (state.mode === "quick") {
       els.studyActions.className = "study-actions quick-actions";
       els.studyActions.innerHTML = `
@@ -483,7 +618,7 @@ function reveal(word, message = "") {
   }
   state.revealed = true;
   const area = $("#revealArea");
-  if (area) area.innerHTML = `<div class="study-answer">${escapeHtml(word.italian)}${word.note ? `<small><br>${escapeHtml(word.note)}</small>` : ""}</div>`;
+  if (area) area.innerHTML = `<div class="study-answer">${escapeHtml(studyAnswer(word))}${word.note ? `<small><br>${escapeHtml(word.note)}</small>` : ""}</div>`;
   if (message && $("#feedback")) $("#feedback").innerHTML = message;
   els.studyActions.className = "study-actions four";
   els.studyActions.innerHTML = `
@@ -509,11 +644,11 @@ function answerQuick(word, known) {
 
 function checkTyped(value, word) {
   if (!value.trim()) return;
-  const correct = normalize(value) === normalize(word.italian);
+  const correct = isCorrectAnswer(value, word);
   if (!correct) recordMistake(word);
   const feedback = $("#feedback");
   feedback.className = `feedback ${correct ? "good" : "bad"}`;
-  feedback.innerHTML = correct ? "Richtig! Ottimo!" : `Fast – richtig ist: <strong>${escapeHtml(word.italian)}</strong>`;
+  feedback.innerHTML = correct ? "Richtig! Ottimo!" : `Fast – richtig ist: <strong>${escapeHtml(studyAnswer(word))}</strong>`;
   speak(word.italian);
   reveal(word, feedback.innerHTML);
 }
@@ -538,14 +673,14 @@ async function startNativeRecognition(word) {
       return;
     }
 
-    const result = await recognition.start({ language: "it-IT", maxResults: 3, partialResults: false, popup: false });
+    const result = await recognition.start({ language: recognitionLanguage(), maxResults: 3, partialResults: false, popup: false });
     const alternatives = Array.isArray(result.matches) ? result.matches : [];
     const heard = alternatives[0] || "";
     const fallback = $("#speechFallback");
     if (fallback) fallback.value = heard;
     if (!heard) {
       if (feedback) feedback.textContent = "Ich habe nichts verstanden. Versuch es noch einmal oder nutze die Diktierfunktion.";
-    } else if (alternatives.some((value) => normalize(value) === normalize(word.italian))) {
+    } else if (alternatives.some((value) => isCorrectAnswer(value, word))) {
       finishSpokenWord(word, heard);
     } else {
       processSpokenAttempt(heard, word);
@@ -574,7 +709,7 @@ function startRecognition(word) {
   state.recognition?.abort?.();
   const recognition = new Recognition();
   state.recognition = recognition;
-  recognition.lang = "it-IT";
+  recognition.lang = recognitionLanguage();
   recognition.interimResults = false;
   recognition.maxAlternatives = 3;
   const button = $("#recordButton");
@@ -586,7 +721,7 @@ function startRecognition(word) {
     const heard = alternatives[0] || "";
     const fallback = $("#speechFallback");
     if (fallback) fallback.value = heard;
-    const correct = alternatives.some((value) => normalize(value) === normalize(word.italian));
+    const correct = alternatives.some((value) => isCorrectAnswer(value, word));
     if (correct) {
       finishSpokenWord(word, heard);
     } else {
@@ -718,9 +853,20 @@ document.addEventListener("click", (event) => {
   if (target.dataset.edit) openWord(state.words.find((word) => word.id === target.dataset.edit));
   if (target.dataset.mode) buildSession(target.dataset.mode);
   if (target.id === "startMixed") buildSession("mixed");
+  if (target.dataset.grammarStart) renderGrammarExercise(target.dataset.grammarStart);
+  if (target.dataset.grammarNext) renderGrammarExercise(target.dataset.grammarNext);
+  if (target.dataset.grammarSpeak) {
+    const exercise = grammarExercises[target.dataset.grammarSpeak]?.[grammarExerciseState[target.dataset.grammarSpeak]];
+    if (exercise) speak(exercise.spoken);
+  }
+  if (target.hasAttribute("data-grammar-answer")) answerGrammarExercise(target.dataset.grammarTopic, Number(target.dataset.grammarAnswer));
   if (target.matches("#openSettings, [data-view='backup']")) els.backupDialog.showModal();
   if (target.dataset.view === "words") document.querySelector(".library-section").scrollIntoView({ behavior: "smooth" });
+  if (target.dataset.view === "grammar") document.querySelector(".grammar-section").scrollIntoView({ behavior: "smooth" });
   if (target.dataset.view === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+  if (["home", "words", "grammar"].includes(target.dataset.view)) {
+    $$(".nav-item").forEach((button) => button.classList.toggle("active", button === target));
+  }
   if (target.id === "closeBackup") els.backupDialog.close();
   if (target.id === "closeStudy" || target.id === "finishStudy") {
     state.speechAutoActive = false;
@@ -757,6 +903,12 @@ els.trainingGroup.addEventListener("change", () => {
   toast(state.selectedGroup ? `${count} Vokabeln aus „${state.selectedGroup}“ ausgewählt.` : "Alle Gruppen sind ausgewählt.");
 });
 
+els.swapTrainingDirection.addEventListener("click", () => {
+  state.trainingDirection = germanFirst() ? "it-de" : "de-it";
+  renderTrainingDirection();
+  toast(`Trainingsrichtung: ${els.trainingDirectionLabel.textContent}`);
+});
+
 els.wordSearch.addEventListener("input", () => {
   state.libraryQuery = els.wordSearch.value;
   renderWordList();
@@ -764,6 +916,11 @@ els.wordSearch.addEventListener("input", () => {
 
 els.wordSort.addEventListener("change", () => {
   state.librarySort = els.wordSort.value;
+  renderWordList();
+});
+
+els.wordGroupFilter.addEventListener("change", () => {
+  state.libraryGroup = els.wordGroupFilter.value;
   renderWordList();
 });
 

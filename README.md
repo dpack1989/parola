@@ -17,6 +17,9 @@ Enthalten sind:
 - italienische Sprachausgabe über die Systemstimme
 - Lernkarten Deutsch → Italienisch mit antippbarer Kartenwendung und automatischer Aussprache
 - Schnelle Übung mit bis zu 30 zufälligen Wörtern; Fehler kommen erneut, bis alle Wörter sitzen
+- alle Lernmodi wahlweise Deutsch → Italienisch oder Italienisch → Deutsch
+- Vokabelliste nach einer einzelnen Gruppe filtern
+- Grammatikbereich mit verständlicher Theorie, Beispielen und wechselnden Übungen zu Genus und bestimmten Artikeln
 - Schreibübungen Deutsch → Italienisch
 - Sprechübungen mit Browser-Spracherkennung
 - automatischer Ablauf beim Sprechen: erkennen, Lösung zeigen, vorsprechen und weiterschalten

@@ -101,5 +101,113 @@ const result = await evaluate(`({
   spokenCount: window.__spoken.length,
   errors: performance.getEntriesByType('resource').filter((entry) => entry.responseStatus >= 400).length
 })`);
-console.log(JSON.stringify({ viewport, firstGerman, firstReveal, repeatedGerman, result }, null, 2));
+
+await evaluate(`(() => {
+  document.querySelector('#finishStudy').click();
+  document.querySelector('#swapTrainingDirection').click();
+  window.__spoken = [];
+  document.querySelector('[data-mode="quick"]').click();
+})()`);
+await waitFor("document.querySelector('#studyDialog')?.open && document.querySelector('[data-card-front] small')?.textContent === 'Italienisch' && window.__spoken.length > 0");
+
+const reverseDirection = await evaluate(`({
+  frontLanguage: document.querySelector('[data-card-front] small').textContent,
+  front: document.querySelector('[data-card-front] strong').textContent,
+  backLanguage: document.querySelector('[data-card-back] small').textContent,
+  back: document.querySelector('[data-card-back] strong').textContent,
+  spoken: window.__spoken.at(-1)
+})`);
+if (reverseDirection.spoken.text !== reverseDirection.front || reverseDirection.spoken.lang !== "it-IT") {
+  throw new Error("Das italienische Ausgangswort wurde nicht automatisch ausgesprochen.");
+}
+
+await evaluate(`(() => {
+  document.querySelector('#closeStudy').click();
+  const group = state.words[0].group;
+  const filter = document.querySelector('#wordGroupFilter');
+  filter.value = group;
+  filter.dispatchEvent(new Event('change', { bubbles: true }));
+})()`);
+const groupFilter = await evaluate(`({
+  selected: document.querySelector('#wordGroupFilter').value,
+  rows: [...document.querySelectorAll('#wordList .word-row')].length,
+  groups: [...document.querySelectorAll('#wordList .word-tag:not(.errors)')].map((item) => item.textContent)
+})`);
+if (!groupFilter.rows || groupFilter.groups.some((group) => group !== groupFilter.selected)) {
+  throw new Error("Der Gruppenfilter der Vokabelliste arbeitet nicht korrekt.");
+}
+
+await evaluate(`document.querySelector('[data-mode="write"]').click()`);
+await waitFor("document.querySelector('#answerInput') && document.querySelector('.study-prompt .language')?.textContent === 'Schreibe auf Deutsch'");
+const reverseWrite = await evaluate(`(() => {
+  const answer = studyAnswer(state.session[state.index]).split(',')[0].trim();
+  document.querySelector('#answerInput').value = answer;
+  document.querySelector('#checkAnswer').click();
+  return { answer, feedback: document.querySelector('#feedback').textContent };
+})()`);
+if (!reverseWrite.feedback.includes("Richtig")) throw new Error("Schreiben in umgekehrter Richtung wurde nicht richtig geprüft.");
+await evaluate(`document.querySelector('#closeStudy').click()`);
+
+await evaluate(`(() => {
+  window.SpeechRecognition = class {
+    start() { window.__recognitionLang = this.lang; }
+    stop() {}
+    abort() {}
+  };
+  document.querySelector('[data-mode="speak"]').click();
+})()`);
+await waitFor("document.querySelector('.study-prompt .language')?.textContent === 'Sage es auf Deutsch'");
+await evaluate(`document.querySelector('#recordButton').click()`);
+await waitFor("window.__recognitionLang === 'de-DE'");
+const reverseSpeak = await evaluate(`(() => {
+  const answer = studyAnswer(state.session[state.index]).split(',')[0].trim();
+  document.querySelector('#speechFallback').value = answer;
+  document.querySelector('#checkSpeech').click();
+  return { answer, language: window.__recognitionLang, feedback: document.querySelector('#feedback').textContent };
+})()`);
+if (reverseSpeak.language !== "de-DE" || !reverseSpeak.feedback.includes("Richtig")) {
+  throw new Error("Sprechen in umgekehrter Richtung wurde nicht richtig geprüft.");
+}
+await evaluate(`document.querySelector('#closeStudy').click()`);
+
+await evaluate(`(() => {
+  document.querySelector('[data-view="grammar"]').click();
+  document.querySelector('[data-grammar-start="gender"]').click();
+})()`);
+await waitFor("document.querySelector('#genderExercise [data-grammar-answer]')");
+const grammarGender = await evaluate(`(() => {
+  const firstPrompt = document.querySelector('#genderExercise .grammar-question strong').textContent;
+  const exercise = grammarExercises.gender[grammarExerciseState.gender];
+  const choices = exercise.choices || ['männlich', 'weiblich'];
+  document.querySelectorAll('#genderExercise [data-grammar-answer]')[choices.indexOf(exercise.answer)].click();
+  const feedback = document.querySelector('#genderExercise .grammar-feedback').textContent;
+  document.querySelector('#genderExercise [data-grammar-next]').click();
+  return { firstPrompt, nextPrompt: document.querySelector('#genderExercise .grammar-question strong').textContent, feedback };
+})()`);
+if (grammarGender.firstPrompt === grammarGender.nextPrompt || !grammarGender.feedback.includes("Richtig")) {
+  throw new Error("Die wechselnde Genus-Übung funktioniert nicht korrekt.");
+}
+
+await evaluate(`(() => {
+  document.querySelectorAll('.grammar-topic')[1].open = true;
+  document.querySelector('[data-grammar-start="articles"]').click();
+})()`);
+await waitFor("document.querySelector('#articlesExercise [data-grammar-answer]')");
+const grammarArticles = await evaluate(`(() => {
+  const exercise = grammarExercises.articles[grammarExerciseState.articles];
+  const button = [...document.querySelectorAll('#articlesExercise [data-grammar-answer]')]
+    .find((item) => exercise.choices[Number(item.dataset.grammarAnswer)] === exercise.answer);
+  button.click();
+  return {
+    prompt: document.querySelector('#articlesExercise .grammar-question strong').textContent,
+    feedback: document.querySelector('#articlesExercise .grammar-feedback').textContent,
+    correctMarked: button.classList.contains('correct'),
+    horizontalOverflow: document.documentElement.scrollWidth > innerWidth
+  };
+})()`);
+if (!grammarArticles.correctMarked || !grammarArticles.feedback.includes("Richtig") || grammarArticles.horizontalOverflow) {
+  throw new Error("Die Artikelübung oder die mobile Grammatikdarstellung funktioniert nicht korrekt.");
+}
+
+console.log(JSON.stringify({ viewport, firstGerman, firstReveal, repeatedGerman, result, reverseDirection, groupFilter, reverseWrite, reverseSpeak, grammarGender, grammarArticles }, null, 2));
 socket.close();
