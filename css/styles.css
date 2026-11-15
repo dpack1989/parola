@@ -45,6 +45,14 @@ h3 { margin-bottom: 6px; }
 .hero-card::after { content: ""; position: absolute; width: 180px; height: 180px; right: -80px; top: -100px; border: 38px solid rgba(238,119,93,.8); border-radius: 50%; }
 .hero-card .section-kicker { color: var(--coral-soft); }
 .hero-card p:not(.section-kicker) { margin-bottom: 0; color: rgba(255,255,255,.7); font-size: .92rem; line-height: 1.5; }
+.app-view[hidden] { display: none !important; }
+.stats-section { margin-top: 32px; }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.stats-grid article { min-height: 112px; padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,253,248,.76); }
+.stats-grid strong, .stats-grid span { display: block; }
+.stats-grid strong { margin-bottom: 8px; color: var(--coral); font: 700 2rem Georgia, serif; }
+.stats-grid span { color: var(--muted); font-size: .72rem; font-weight: 800; }
+.practice-hero { margin-bottom: 30px; }
 
 .primary-button, .secondary-button, .file-button { border: 0; border-radius: 16px; min-height: 50px; padding: 0 18px; cursor: pointer; font-weight: 800; }
 .primary-button { display: flex; align-items: center; justify-content: space-between; background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(238,119,93,.22); }
@@ -71,6 +79,7 @@ h3 { margin-bottom: 6px; }
 .mode-card small { margin-top: 4px; color: rgba(33,48,43,.65); font-size: .7rem; line-height: 1.2; }
 
 .grammar-section, .library-section { margin-top: 40px; scroll-margin-top: 18px; }
+.app-view.grammar-section, .app-view.library-section { margin-top: 0; }
 .grammar-intro { margin-bottom: 18px; color: var(--muted); font-size: .9rem; line-height: 1.55; }
 .grammar-topic { margin-bottom: 12px; border: 1px solid var(--line); border-radius: 22px; background: rgba(255,253,248,.78); overflow: hidden; }
 .grammar-topic summary { display: grid; grid-template-columns: 44px 1fr; align-items: center; gap: 12px; min-height: 82px; padding: 14px 18px; cursor: pointer; list-style: none; }
@@ -177,6 +186,9 @@ input { width: 100%; height: 52px; margin-top: 7px; padding: 0 14px; border: 1px
 .cloud-actions { display: grid; gap: 9px; }
 .secondary-button.full { width: 100%; }
 .cloud-account { margin: 18px 0 4px; overflow-wrap: anywhere; }
+.cloud-message { min-height: 20px; margin: 2px 0 12px; color: var(--muted); font-size: .75rem; font-weight: 700; line-height: 1.45; }
+.cloud-message.good { color: var(--green); }
+.cloud-message.bad { color: #b54a3f; }
 .backup-heading { margin-top: 24px; font-family: Georgia, serif; }
 
 .study-dialog { width: min(100%, 720px); height: 100dvh; max-height: none; border-radius: 0; background: var(--paper); }

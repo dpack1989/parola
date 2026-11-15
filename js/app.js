@@ -27,6 +27,7 @@ const state = {
   speechPlaybackTimer: null,
   speechPlaybackStarted: false,
   autoAdvanceTimer: null,
+  activeView: "home",
   deletedWords: {},
   localUpdatedAt: "",
   cloud: {
@@ -83,8 +84,12 @@ const els = {
   studyDialog: $("#studyDialog"), studyContent: $("#studyContent"), studyActions: $("#studyActions"),
   studyProgress: $("#studyProgress"), studyPosition: $("#studyPosition"),
   backupDialog: $("#backupDialog"), toast: $("#toast"),
+  homeUserName: $("#homeUserName"), homeCloudState: $("#homeCloudState"),
+  statWordCount: $("#statWordCount"), statDueCount: $("#statDueCount"),
+  statMistakeCount: $("#statMistakeCount"), statLearnedCount: $("#statLearnedCount"),
   cloudStatus: $("#cloudStatus"), cloudSignedOut: $("#cloudSignedOut"), cloudSignedIn: $("#cloudSignedIn"),
-  cloudEmail: $("#cloudEmail"), cloudPassword: $("#cloudPassword"), cloudAccount: $("#cloudAccount"),
+  cloudName: $("#cloudName"), cloudEmail: $("#cloudEmail"), cloudPassword: $("#cloudPassword"), cloudAccount: $("#cloudAccount"),
+  cloudMessage: $("#cloudMessage"),
   cloudLastSync: $("#cloudLastSync"), cloudSignIn: $("#cloudSignIn"), cloudSignUp: $("#cloudSignUp"),
   cloudSignOut: $("#cloudSignOut"), cloudSyncNow: $("#cloudSyncNow")
 };
@@ -259,6 +264,13 @@ function renderCloud() {
   [els.cloudSignIn, els.cloudSignUp, els.cloudSignOut, els.cloudSyncNow].forEach((button) => {
     if (button) button.disabled = state.cloud.syncing;
   });
+  renderHomeSummary();
+}
+
+function setCloudMessage(message = "", type = "") {
+  if (!els.cloudMessage) return;
+  els.cloudMessage.textContent = message;
+  els.cloudMessage.className = `cloud-message${type ? ` ${type}` : ""}`;
 }
 
 function cloudErrorMessage(error) {
@@ -294,6 +306,7 @@ async function handleCloudSession(session, event = "") {
     state.cloud.ready = false;
     state.cloud.phase = "signed-out";
     state.cloud.lastSyncedAt = "";
+    setCloudMessage("");
     renderCloud();
     return;
   }
@@ -318,10 +331,16 @@ async function syncFromCloud({ announce = false } = {}) {
     state.cloud.ready = true;
     state.cloud.phase = "synced";
     state.cloud.lastSyncedAt = new Date().toISOString();
-    if (announce) toast("Cloud und Gerät sind synchronisiert.");
+    if (announce) {
+      setCloudMessage("Cloud und Gerät sind synchronisiert.", "good");
+      toast("Cloud und Gerät sind synchronisiert.");
+    }
   } catch (error) {
     state.cloud.phase = navigator.onLine ? "error" : "offline";
-    if (announce) toast(cloudErrorMessage(error));
+    if (announce) {
+      setCloudMessage(cloudErrorMessage(error), "bad");
+      toast(cloudErrorMessage(error));
+    }
   } finally {
     state.cloud.syncing = false;
     renderCloud();
@@ -372,7 +391,47 @@ function render() {
   renderGroups();
   renderTrainingDirection();
   renderWordList();
+  renderHomeSummary();
+  renderNavigation();
   renderCloud();
+}
+
+function renderHomeSummary() {
+  if (!els.homeUserName) return;
+  const due = dueWords().length;
+  const mistakes = state.words.reduce((sum, word) => sum + (word.mistakeCount || 0), 0);
+  const practiced = state.words.filter((word) => (word.correctCount || 0) + (word.mistakeCount || 0) > 0).length;
+  const user = state.cloud.session?.user;
+  const name = user?.user_metadata?.display_name || user?.user_metadata?.full_name || user?.email?.split("@")[0] || "";
+  els.homeUserName.textContent = name ? `Ciao, ${name}!` : "Ciao!";
+  els.homeCloudState.textContent = user
+    ? "Dein Lernstand wird sicher zwischen deinen Geräten synchronisiert."
+    : "Deine Wörter sind auf diesem Gerät gespeichert.";
+  els.statWordCount.textContent = state.words.length;
+  els.statDueCount.textContent = due;
+  els.statMistakeCount.textContent = mistakes;
+  els.statLearnedCount.textContent = practiced;
+}
+
+function renderNavigation() {
+  $$("[data-view-panel]").forEach((panel) => {
+    const active = panel.dataset.viewPanel === state.activeView;
+    panel.hidden = !active;
+    panel.classList.toggle("active", active);
+  });
+  $$(".nav-item[data-view]").forEach((button) => {
+    const active = button.dataset.view === state.activeView;
+    button.classList.toggle("active", active);
+    if (active) button.setAttribute("aria-current", "page");
+    else button.removeAttribute("aria-current");
+  });
+}
+
+function showView(view) {
+  if (!$("[data-view-panel='" + view + "']")) return;
+  state.activeView = view;
+  renderNavigation();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function renderWordList() {
@@ -1071,13 +1130,9 @@ document.addEventListener("click", (event) => {
     if (exercise) speak(exercise.spoken);
   }
   if (target.hasAttribute("data-grammar-answer")) answerGrammarExercise(target.dataset.grammarTopic, Number(target.dataset.grammarAnswer));
-  if (target.matches("#openSettings, [data-view='backup']")) els.backupDialog.showModal();
-  if (target.dataset.view === "words") document.querySelector(".library-section").scrollIntoView({ behavior: "smooth" });
-  if (target.dataset.view === "grammar") document.querySelector(".grammar-section").scrollIntoView({ behavior: "smooth" });
-  if (target.dataset.view === "home") window.scrollTo({ top: 0, behavior: "smooth" });
-  if (["home", "words", "grammar"].includes(target.dataset.view)) {
-    $$(".nav-item").forEach((button) => button.classList.toggle("active", button === target));
-  }
+  if (target.id === "openSettings") els.backupDialog.showModal();
+  if (target.id === "openPractice") showView("practice");
+  if (target.dataset.view) showView(target.dataset.view);
   if (target.id === "closeBackup") els.backupDialog.close();
   if (target.id === "closeStudy" || target.id === "finishStudy") {
     state.speechAutoActive = false;
@@ -1144,25 +1199,31 @@ $("#exportData").addEventListener("click", exportData);
 $("#importData").addEventListener("change", (event) => event.target.files[0] && importData(event.target.files[0]));
 
 async function cloudCredentials(action) {
+  const displayName = els.cloudName.value.trim();
   const email = els.cloudEmail.value.trim();
   const password = els.cloudPassword.value;
   if (!email || password.length < 8) {
+    setCloudMessage("Bitte E-Mail-Adresse und ein Passwort mit mindestens 8 Zeichen eingeben.", "bad");
     toast("Bitte E-Mail-Adresse und ein Passwort mit mindestens 8 Zeichen eingeben.");
     return;
   }
+  setCloudMessage("Verbindung wird hergestellt …");
   state.cloud.phase = "syncing";
   renderCloud();
   try {
-    const data = await action(email, password);
+    const data = await action(email, password, displayName);
     els.cloudPassword.value = "";
     if (data.session) {
       await handleCloudSession(data.session, "SIGNED_IN");
+      setCloudMessage("Angemeldet – deine Wörter sind synchronisiert.", "good");
       toast("Angemeldet – deine Wörter werden synchronisiert.");
     } else {
+      setCloudMessage("Bestätigungs-E-Mail versendet. Öffne den Link und melde dich danach hier an.", "good");
       toast("Bitte öffne jetzt die Bestätigungs-E-Mail von Supabase.");
     }
   } catch (error) {
     state.cloud.phase = "error";
+    setCloudMessage(cloudErrorMessage(error), "bad");
     toast(cloudErrorMessage(error));
   } finally {
     renderCloud();
@@ -1170,7 +1231,7 @@ async function cloudCredentials(action) {
 }
 
 els.cloudSignIn.addEventListener("click", () => cloudCredentials((email, password) => window.ParolaCloud.signIn(email, password)));
-els.cloudSignUp.addEventListener("click", () => cloudCredentials((email, password) => window.ParolaCloud.signUp(email, password)));
+els.cloudSignUp.addEventListener("click", () => cloudCredentials((email, password, displayName) => window.ParolaCloud.signUp(email, password, displayName)));
 els.cloudSyncNow.addEventListener("click", () => syncFromCloud({ announce: true }));
 els.cloudSignOut.addEventListener("click", async () => {
   state.cloud.syncing = true;
@@ -1178,6 +1239,7 @@ els.cloudSignOut.addEventListener("click", async () => {
   try {
     await window.ParolaCloud.signOut();
     await handleCloudSession(null, "SIGNED_OUT");
+    setCloudMessage("");
     toast("Cloud abgemeldet. Die lokalen Wörter bleiben erhalten.");
   } catch (error) {
     toast(cloudErrorMessage(error));

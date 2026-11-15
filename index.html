@@ -24,16 +24,41 @@
     </header>
 
     <main>
-      <section class="hero-card" aria-labelledby="todayTitle">
-        <div>
-          <p class="section-kicker">Heute</p>
-          <h2 id="todayTitle"><span id="dueCount">0</span> <span id="dueLabel">Wörter warten</span> auf dich</h2>
-          <p id="todayHint">Füge deine ersten Vokabeln hinzu und starte deine Lernserie.</p>
-        </div>
-        <button class="primary-button" id="startMixed">Gemischt üben <span>→</span></button>
+      <section class="app-view home-view active" data-view-panel="home" aria-labelledby="homeTitle">
+        <section class="hero-card home-hero">
+          <div>
+            <p class="section-kicker">Willkommen</p>
+            <h2 id="homeTitle"><span id="homeUserName">Ciao!</span></h2>
+            <p id="homeCloudState">Deine Wörter sind auf diesem Gerät gespeichert.</p>
+          </div>
+          <button class="primary-button" id="openPractice">Üben starten <span>→</span></button>
+        </section>
+
+        <section class="stats-section" aria-labelledby="statsTitle">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Dein Überblick</p>
+              <h2 id="statsTitle">Lernstand</h2>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <article><strong id="statWordCount">0</strong><span>Wörter</span></article>
+            <article><strong id="statDueCount">0</strong><span>heute fällig</span></article>
+            <article><strong id="statMistakeCount">0</strong><span>Fehler gesammelt</span></article>
+            <article><strong id="statLearnedCount">0</strong><span>schon geübt</span></article>
+          </div>
+        </section>
       </section>
 
-      <section aria-labelledby="modesTitle">
+      <section class="app-view practice-view" data-view-panel="practice" aria-labelledby="modesTitle" hidden>
+        <section class="hero-card practice-hero" aria-labelledby="todayTitle">
+          <div>
+            <p class="section-kicker">Heute</p>
+            <h2 id="todayTitle"><span id="dueCount">0</span> <span id="dueLabel">Wörter warten</span> auf dich</h2>
+            <p id="todayHint">Füge deine ersten Vokabeln hinzu und starte deine Lernserie.</p>
+          </div>
+          <button class="primary-button" id="startMixed">Gemischt üben <span>→</span></button>
+        </section>
         <div class="section-heading">
           <div>
             <p class="section-kicker">Lernmodus</p>
@@ -73,7 +98,7 @@
         </div>
       </section>
 
-      <section class="grammar-section" id="grammarSection" aria-labelledby="grammarTitle">
+      <section class="app-view grammar-section" data-view-panel="grammar" id="grammarSection" aria-labelledby="grammarTitle" hidden>
         <div class="section-heading">
           <div>
             <p class="section-kicker">Regeln verstehen</p>
@@ -155,7 +180,7 @@
         </details>
       </section>
 
-      <section class="library-section" aria-labelledby="libraryTitle">
+      <section class="app-view library-section" data-view-panel="words" aria-labelledby="libraryTitle" hidden>
         <div class="section-heading">
           <div>
             <p class="section-kicker">Meine Sammlung</p>
@@ -200,10 +225,10 @@
     </main>
 
     <nav class="bottom-nav" aria-label="Hauptnavigation">
-      <button class="nav-item active" data-view="home"><span>⌂</span>Heute</button>
+      <button class="nav-item active" data-view="home"><span>⌂</span>Home</button>
+      <button class="nav-item" data-view="practice"><span>▶</span>Üben</button>
       <button class="nav-item" data-view="words"><span>≡</span>Wörter</button>
       <button class="nav-item" data-view="grammar"><span>◎</span>Grammatik</button>
-      <button class="nav-item" data-view="backup"><span>⇅</span>Sicherung</button>
     </nav>
   </div>
 
@@ -263,12 +288,16 @@
         </div>
 
         <div id="cloudSignedOut">
+          <label>Dein Name <small>(optional)</small>
+            <input type="text" id="cloudName" autocomplete="name" placeholder="z. B. Daniel">
+          </label>
           <label>E-Mail-Adresse
             <input type="email" id="cloudEmail" autocomplete="username" inputmode="email" placeholder="name@beispiel.at">
           </label>
           <label>Passwort
             <input type="password" id="cloudPassword" autocomplete="current-password" minlength="8" placeholder="Mindestens 8 Zeichen">
           </label>
+          <p class="cloud-message" id="cloudMessage" role="status" aria-live="polite"></p>
           <div class="cloud-actions">
             <button class="primary-button full" id="cloudSignIn" type="button">Anmelden & synchronisieren</button>
             <button class="secondary-button full" id="cloudSignUp" type="button">Kostenloses Konto anlegen</button>

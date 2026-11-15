@@ -35,11 +35,14 @@
       return client.auth.onAuthStateChange((event, session) => callback(event, session));
     },
 
-    async signUp(email, password) {
+    async signUp(email, password, displayName = "") {
       const { data, error } = await client.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: redirectUrl() }
+        options: {
+          emailRedirectTo: redirectUrl(),
+          data: displayName ? { display_name: displayName } : {}
+        }
       });
       if (error) throw error;
       return data;

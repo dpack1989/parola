@@ -56,6 +56,27 @@ await waitFor("Number(document.querySelector('#wordCount')?.textContent) > 0");
 const viewport = await evaluate("({ width: innerWidth, height: innerHeight })");
 if (viewport.width !== 390 || viewport.height !== 844) throw new Error(`Falsche Testgröße: ${viewport.width}x${viewport.height}`);
 
+const navigation = await evaluate(`(() => {
+  const labels = [...document.querySelectorAll('.nav-item')].map((button) => button.textContent.trim());
+  const results = [];
+  for (const view of ['home', 'practice', 'words', 'grammar', 'home']) {
+    document.querySelector('[data-view="' + view + '"]').click();
+    results.push({
+      view,
+      activeButton: document.querySelector('.nav-item.active')?.dataset.view,
+      visiblePanels: [...document.querySelectorAll('[data-view-panel]')].filter((panel) => !panel.hidden).map((panel) => panel.dataset.viewPanel)
+    });
+  }
+  return {
+    labels,
+    results,
+    stats: [...document.querySelectorAll('.stats-grid strong')].map((item) => item.textContent)
+  };
+})()`);
+if (navigation.labels.join('|') !== '⌂Home|▶Üben|≡Wörter|◎Grammatik' || navigation.results.some((item) => item.activeButton !== item.view || item.visiblePanels.length !== 1 || item.visiblePanels[0] !== item.view)) {
+  throw new Error("Die Seitennavigation arbeitet nicht korrekt.");
+}
+
 await evaluate(`(() => {
   window.__spoken = [];
   const originalSpeak = speechSynthesis.speak.bind(speechSynthesis);
@@ -211,18 +232,20 @@ if (!grammarArticles.correctMarked || !grammarArticles.feedback.includes("Richti
 
 const cloudDialog = await evaluate(`(() => {
   document.querySelector('#openSettings').click();
+  document.querySelector('#cloudSignIn').click();
   const dialog = document.querySelector('#backupDialog');
   const panel = document.querySelector('.cloud-panel');
   const result = {
     open: dialog.open,
     emailVisible: !document.querySelector('#cloudSignedOut').hidden,
     status: document.querySelector('#cloudStatus').textContent,
+    message: document.querySelector('#cloudMessage').textContent,
     fitsViewport: panel.getBoundingClientRect().width <= innerWidth - 24
   };
   document.querySelector('#closeBackup').click();
   return result;
 })()`);
-if (!cloudDialog.open || !cloudDialog.emailVisible || !cloudDialog.fitsViewport) {
+if (!cloudDialog.open || !cloudDialog.emailVisible || !cloudDialog.fitsViewport || !cloudDialog.message.includes('mindestens 8 Zeichen')) {
   throw new Error("Die Cloud-Anmeldung ist auf dem iPhone nicht korrekt bedienbar.");
 }
 
@@ -269,12 +292,13 @@ const cloudSync = await evaluate(`(async () => {
     totalPushes: window.__cloudPushes.length,
     pushedNote: window.__cloudPushes.at(-1)?.payload?.words?.find((word) => word.id === remoteWord.id)?.note,
     status: document.querySelector('#cloudStatus')?.textContent,
-    account: document.querySelector('#cloudAccount')?.textContent
+    account: document.querySelector('#cloudAccount')?.textContent,
+    homeName: document.querySelector('#homeUserName')?.textContent
   };
 })()`);
-if (!cloudSync.pulled || cloudSync.firstPushCount !== 1 || cloudSync.totalPushes < 2 || cloudSync.pushedNote !== "am iPhone ergänzt" || cloudSync.status !== "Verbunden") {
+if (!cloudSync.pulled || cloudSync.firstPushCount !== 1 || cloudSync.totalPushes < 2 || cloudSync.pushedNote !== "am iPhone ergänzt" || cloudSync.status !== "Verbunden" || cloudSync.homeName !== "Ciao, test!") {
   throw new Error("Die lokale Cloud-Synchronisierung funktioniert nicht korrekt.");
 }
 
-console.log(JSON.stringify({ viewport, firstGerman, firstReveal, repeatedGerman, result, reverseDirection, groupFilter, reverseWrite, reverseSpeak, grammarGender, grammarArticles, cloudDialog, cloudSync }, null, 2));
+console.log(JSON.stringify({ viewport, navigation, firstGerman, firstReveal, repeatedGerman, result, reverseDirection, groupFilter, reverseWrite, reverseSpeak, grammarGender, grammarArticles, cloudDialog, cloudSync }, null, 2));
 socket.close();
