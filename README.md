@@ -1,6 +1,10 @@
 # Parola – Italienisch-Vokabeltrainer
 
-Parola ist ein privater Italienisch-Vokabeltrainer für Web, iPhone, Android und Windows. Persönliche Lerninhalte bleiben lokal auf dem jeweiligen Gerät.
+**Parola** ist Italienisch und bedeutet „Wort“. Unter diesem Namen entsteht ein privater Italienisch-Vokabeltrainer für Web, iPhone, Android und Windows. Persönliche Lerninhalte bleiben lokal auf dem jeweiligen Gerät.
+
+- **Web-App öffnen:** [dpack1989.github.io/parola](https://dpack1989.github.io/parola/)
+- **Projekt auf GitHub:** [github.com/dpack1989/parola](https://github.com/dpack1989/parola)
+- **Dokumentation:** [GitHub und GitHub Pages](docs/GITHUB-UND-PAGES.md) · [Parola im Überblick](docs/PAROLA.md)
 
 ## Aktueller Stand
 
